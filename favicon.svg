@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><style>
+    #light-icon {
+      display: inline;
+    }
+    #dark-icon {
+      display: none;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      #light-icon {
+        display: none;
+      }
+      #dark-icon {
+        display: inline;
+      }
+    }
+  </style><g id="light-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g clip-path="url(#SvgjsClipPath1431)"><rect width="1000" height="1000" fill="#ffffff"></rect><g transform="matrix(1.8975332068311195,0,0,1.8975332068311195,0,298.86148007590134)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="527" height="212"><svg width="527" height="212" viewBox="0 0 527 212" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M521 6C321 278 121 214 9 102C121 6 321 -58 521 206" stroke="black" stroke-width="12" stroke-linecap="round"></path>
+</svg></svg></g></g><defs><clipPath id="SvgjsClipPath1431"><rect width="1000" height="1000" x="0" y="0" rx="350" ry="350"></rect></clipPath></defs></svg></g><g id="dark-icon"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><g><g transform="matrix(1.8975332068311195,0,0,1.8975332068311195,0,298.86148007590134)" style="filter: invert(100%)"><svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="527" height="212"><svg width="527" height="212" viewBox="0 0 527 212" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M521 6C321 278 121 214 9 102C121 6 321 -58 521 206" stroke="black" stroke-width="12" stroke-linecap="round"></path>
+</svg></svg></g></g></svg></g></svg>
