@@ -16,8 +16,7 @@
         .description { margin: 10px 0 20px 0; color: #cbd5e1; text-align: center; }
     </style>
 
-    <!-- Подключаем клиент Gradio -->
-    <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.12.0/gradio.js"></script>
+    <!-- Gradio клиент больше не нужен, подключаем iframe -->
 </head>
 <body>
 
@@ -26,9 +25,16 @@
         <div class="description">Бесплатная генерация видео из текста (Preview 14B модель)</div>
     </header>
 
-    <div class="container">
-        <!-- Тот самый магический компонент, который сам построит интерфейс под модель -->
-        <gradio-app src="https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview"></gradio-app>
+    <!-- ЗАМЕНЕНО: gradio-app на iframe с прямым URL сервера -->
+    <div class="container" style="height: 1000px;">
+        <iframe
+            src="https://r3gm-wan2-2-fp8da-aoti-preview.hf.space"
+            frameborder="0"
+            width="100%"
+            height="100%"
+            allow="accelerometer; ambient-light-sensor; camera; display-capture; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+            sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads"
+        ></iframe>
     </div>
 
     <footer>
