@@ -3,70 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wan2.2 Multi-Mirror Video Gen — FOSSpel</title>
+    <!-- МАГИЯ: Запрещаем передавать Referer, чтобы HF не знал, что мы с GitHub -->
+    <meta name="referrer" content="no-referrer">
+    <title>Wan2.2 Multi-Mirror — FOSSpel</title>
     <style>
-        body { font-family: sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; min-height: 100vh; }
-        header { padding: 15px; text-align: center; background: #1e293b; border-bottom: 1px solid #334155; }
-        
-        /* Панель переключения зеркал */
-        .mirror-selector { background: #1e293b; padding: 10px; text-align: center; border-bottom: 1px solid #475569; }
+        body { font-family: sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { padding: 10px; text-align: center; background: #1e293b; border-bottom: 1px solid #334155; }
+        .mirror-selector { background: #1e293b; padding: 10px; text-align: center; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
         .mirror-btn { 
-            background: #334155; border: 1px solid #38bdf8; color: white; padding: 8px 15px; 
-            margin: 0 5px; cursor: pointer; border-radius: 4px; transition: 0.3s;
+            background: #334155; border: 1px solid #38bdf8; color: white; padding: 6px 12px; 
+            cursor: pointer; border-radius: 4px; font-size: 0.8rem;
         }
-        .mirror-btn:hover { background: #38bdf8; color: #0f172a; }
-        .mirror-btn.active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 10px #38bdf8; }
-
-        .container { flex-grow: 1; position: relative; overflow: hidden; }
-        iframe { border: none; width: 100%; height: 100%; min-height: 800px; }
-        
-        h1 { margin: 0; font-size: 1.2rem; color: #38bdf8; }
-        .status-tag { font-size: 0.7rem; color: #10b981; margin-left: 10px; text-transform: uppercase; border: 1px solid #10b981; padding: 2px 5px; border-radius: 3px; }
+        .mirror-btn.active { background: #38bdf8; color: #0f172a; font-weight: bold; }
+        .container { flex-grow: 1; position: relative; }
+        iframe { border: none; width: 100%; height: 100%; background: #0f172a; }
+        h1 { margin: 0; font-size: 1.1rem; color: #38bdf8; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Wan2.2 Video Generator <span class="status-tag">H100 Zero-GPU</span></h1>
+        <h1>Wan2.2 Video Hub <span id="current-mirror" style="color: #94a3b8; font-size: 0.8rem;">(Mirror 1)</span></h1>
     </header>
 
-    <div class="mirror-selector" id="controls">
-        <span style="font-size: 0.8rem; margin-right: 10px; color: #94a3b8;">Если не работает, смени сервер:</span>
-        <!-- Сюда добавляем те самые реплики, которые ты нашел -->
-        <button class="mirror-btn active" onclick="switchMirror(this, 'r3gm/wan2-2-fp8da-aoti-preview')">Сервер 1 (Stable)</button>
-        <button class="mirror-btn" onclick="switchMirror(this, 'r3gm/wan2-2-fp8da-aoti-preview2')">Сервер 2 (Backup)</button>
-        <button class="mirror-btn" onclick="switchMirror(this, 'zerogpu-aoti/wan2-2-fp8da-aoti-faster')">Сервер 3 (Fast H100)</button>
+    <div class="mirror-selector">
+        <!-- Используем прямые ссылки на технические поддомены hf.space -->
+        <button class="mirror-btn active" onclick="switchMirror(this, 'https://r3gm-wan2-2-fp8da-aoti-preview.hf.space')">Mirror 1 (Stable)</button>
+        <button class="mirror-btn" onclick="switchMirror(this, 'https://r3gm-wan2-2-fp8da-aoti-preview2.hf.space')">Mirror 2 (Backup)</button>
+        <button class="mirror-btn" onclick="switchMirror(this, 'https://zerogpu-aoti-wan2-2-fp8da-aoti-faster.hf.space')">Mirror 3 (Fast H100)</button>
     </div>
 
     <div class="container">
         <iframe
             id="ai-frame"
-            src="https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview/+/embed"
+            src="https://r3gm-wan2-2-fp8da-aoti-preview.hf.space"
             allow="accelerometer; ambient-light-sensor; camera; display-capture; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
-            sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads"
+            referrerpolicy="no-referrer"
         ></iframe>
     </div>
 
     <script>
-        function switchMirror(btn, spaceId) {
-            // Убираем активный класс у всех кнопок
+        function switchMirror(btn, fullUrl) {
             document.querySelectorAll('.mirror-btn').forEach(b => b.classList.remove('active'));
-            // Добавляем активный класс нажатой кнопке
             btn.classList.add('active');
             
-            // Меняем src у фрейма на новое зеркало
             const frame = document.getElementById('ai-frame');
-            const newSrc = `https://huggingface.co/spaces/${spaceId}/+/embed`;
+            document.getElementById('current-mirror').innerText = `(${btn.innerText})`;
             
-            // Показываем пользователю, что идет загрузка
-            frame.style.opacity = '0.5';
-            frame.src = newSrc;
+            frame.style.opacity = '0';
+            // Переключаем на ПРЯМОЙ технический адрес
+            frame.src = fullUrl;
             
             frame.onload = () => {
                 frame.style.opacity = '1';
             };
         }
     </script>
-
 </body>
 </html>
