@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wan2.2 AI Video Generator — Бесплатная генерация видео</title>
+    <meta name="description" content="Создавайте потрясающие видео с помощью нейросети Wan2.2 14B бесплатно. Без регистрации и SMS на FOSSpel.">
+    
+    <!-- Стили для того, чтобы это не выглядело как привет из 90-х -->
+    <style>
+        body { font-family: sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; min-height: 100vh; }
+        header { padding: 20px; text-align: center; background: #1e293b; border-bottom: 1px solid #334155; }
+        .container { flex-grow: 1; display: flex; flex-direction: column; padding: 20px; }
+        footer { padding: 10px; text-align: center; font-size: 0.8rem; color: #94a3b8; }
+        h1 { margin: 0; font-size: 1.5rem; color: #38bdf8; }
+        .description { margin: 10px 0 20px 0; color: #cbd5e1; text-align: center; }
+    </style>
+
+    <!-- Подключаем клиент Gradio -->
+    <script type="module" src="https://gradio.s3-us-west-2.amazonaws.com/4.12.0/gradio.js"></script>
+</head>
+<body>
+
+    <header>
+        <h1>Wan2.2 AI Video Generator</h1>
+        <div class="description">Бесплатная генерация видео из текста (Preview 14B модель)</div>
+    </header>
+
+    <div class="container">
+        <!-- Тот самый магический компонент, который сам построит интерфейс под модель -->
+        <gradio-app src="https://huggingface.co/spaces/r3gm/Wan2.2-14B-Preview"></gradio-app>
+    </div>
+
+    <footer>
+        <p>Работает на мощностях Hugging Face Zero-GPU. Проект FOSSpel.</p>
+    </footer>
+
+</body>
+</html>
