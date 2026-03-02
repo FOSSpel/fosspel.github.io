@@ -3,80 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wan2.2 AI Video Generator — Ротация серверов FOSSpel</title>
-    <meta name="description" content="Бесплатная генерация видео на базе Wan2.2. Используем несколько H100 зеркал для стабильной работы.">
-    
+    <title>Wan2.2 Multi-Mirror Video Gen — FOSSpel</title>
     <style>
         body { font-family: sans-serif; margin: 0; background: #0f172a; color: white; display: flex; flex-direction: column; min-height: 100vh; }
         header { padding: 15px; text-align: center; background: #1e293b; border-bottom: 1px solid #334155; }
-        .container { flex-grow: 1; display: flex; flex-direction: column; padding: 10px; position: relative; }
-        footer { padding: 10px; text-align: center; font-size: 0.8rem; color: #94a3b8; }
-        h1 { margin: 0; font-size: 1.2rem; color: #38bdf8; }
         
-        .server-info { font-size: 0.7rem; color: #4ade80; margin-bottom: 10px; }
-        .reload-btn { 
-            background: #38bdf8; color: #0f172a; border: none; 
-            padding: 5px 10px; border-radius: 4px; cursor: pointer; 
-            font-size: 0.8rem; font-weight: bold; margin-top: 5px;
+        /* Панель переключения зеркал */
+        .mirror-selector { background: #1e293b; padding: 10px; text-align: center; border-bottom: 1px solid #475569; }
+        .mirror-btn { 
+            background: #334155; border: 1px solid #38bdf8; color: white; padding: 8px 15px; 
+            margin: 0 5px; cursor: pointer; border-radius: 4px; transition: 0.3s;
         }
-        .reload-btn:hover { background: #7dd3fc; }
+        .mirror-btn:hover { background: #38bdf8; color: #0f172a; }
+        .mirror-btn.active { background: #38bdf8; color: #0f172a; box-shadow: 0 0 10px #38bdf8; }
 
-        iframe { border-radius: 8px; border: 1px solid #334155; background: #1e293b; }
+        .container { flex-grow: 1; position: relative; overflow: hidden; }
+        iframe { border: none; width: 100%; height: 100%; min-height: 800px; }
+        
+        h1 { margin: 0; font-size: 1.2rem; color: #38bdf8; }
+        .status-tag { font-size: 0.7rem; color: #10b981; margin-left: 10px; text-transform: uppercase; border: 1px solid #10b981; padding: 2px 5px; border-radius: 3px; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Wan2.2 AI Video Generator</h1>
-        <div id="status" class="server-info">Подключение к лучшему GPU...</div>
-        <button class="reload-btn" onclick="rotateServer()">Сменить сервер (если не грузит)</button>
+        <h1>Wan2.2 Video Generator <span class="status-tag">H100 Zero-GPU</span></h1>
     </header>
 
+    <div class="mirror-selector" id="controls">
+        <span style="font-size: 0.8rem; margin-right: 10px; color: #94a3b8;">Если не работает, смени сервер:</span>
+        <!-- Сюда добавляем те самые реплики, которые ты нашел -->
+        <button class="mirror-btn active" onclick="switchMirror(this, 'r3gm/wan2-2-fp8da-aoti-preview')">Сервер 1 (Stable)</button>
+        <button class="mirror-btn" onclick="switchMirror(this, 'r3gm/wan2-2-fp8da-aoti-preview2')">Сервер 2 (Backup)</button>
+        <button class="mirror-btn" onclick="switchMirror(this, 'zerogpu-aoti/wan2-2-fp8da-aoti-faster')">Сервер 3 (Fast H100)</button>
+    </div>
+
     <div class="container">
-        <!-- Iframe без src, его подставит скрипт -->
         <iframe
             id="ai-frame"
-            src=""
-            frameborder="0"
-            width="100%"
-            height="800px"
+            src="https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview/+/embed"
             allow="accelerometer; ambient-light-sensor; camera; display-capture; encrypted-media; geolocation; gyroscope; microphone; midi; payment; usb; vr; xr-spatial-tracking"
             sandbox="allow-forms allow-modals allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-downloads"
         ></iframe>
     </div>
 
-    <footer>
-        <p>Система ротации зеркал FOSSpel. Мощности: NVIDIA H100 (Zero-GPU).</p>
-    </footer>
-
     <script>
-        // Список активных зеркал из твоего скриншота
-        const mirrors = [
-            "https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview/+/embed",
-            "https://huggingface.co/spaces/r3gm/wan2-2-fp8da-aoti-preview2/+/embed",
-            "https://huggingface.co/spaces/zerogpu-aoti/wan2-2-fp8da-aoti-faster/+/embed"
-        ];
-
-        function rotateServer() {
+        function switchMirror(btn, spaceId) {
+            // Убираем активный класс у всех кнопок
+            document.querySelectorAll('.mirror-btn').forEach(b => b.classList.remove('active'));
+            // Добавляем активный класс нажатой кнопке
+            btn.classList.add('active');
+            
+            // Меняем src у фрейма на новое зеркало
             const frame = document.getElementById('ai-frame');
-            const status = document.getElementById('status');
+            const newSrc = `https://huggingface.co/spaces/${spaceId}/+/embed`;
             
-            // Выбираем случайное зеркало
-            const randomIndex = Math.floor(Math.random() * mirrors.length);
-            const selectedMirror = mirrors[randomIndex];
+            // Показываем пользователю, что идет загрузка
+            frame.style.opacity = '0.5';
+            frame.src = newSrc;
             
-            // Чтобы пользователь видел, что сервер сменился
-            frame.src = ""; 
-            status.innerText = "Подключение к серверу #" + (randomIndex + 1) + "...";
-            
-            setTimeout(() => {
-                frame.src = selectedMirror;
-                console.log("Загружен сервер:", selectedMirror);
-            }, 100);
+            frame.onload = () => {
+                frame.style.opacity = '1';
+            };
         }
-
-        // Запуск при загрузке страницы
-        window.onload = rotateServer;
     </script>
 
 </body>
