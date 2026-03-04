@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Защита от передачи реферера на HF, чтобы не палить домен GitHub -->
+    <!-- МАГИЯ: Запрещаем передавать Referer на Hugging Face -->
     <meta name="referrer" content="no-referrer">
     
-    <title>Wan2.2 Video AI — Бесплатная генерация видео без лимитов | FOSSpel</title>
+    <title>Wan2.2 Video AI — Бесплатный доступ (Zero-Cost) | FOSSpel</title>
     
     <style>
         :root {
@@ -32,26 +32,26 @@
 
         header {
             background-color: var(--panel-color);
-            padding: 12px 20px;
+            padding: 10px 20px;
             border-bottom: 1px solid #30363d;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            gap: 15px;
             z-index: 10;
         }
 
         .logo-area {
             display: flex;
             flex-direction: column;
+            min-width: fit-content;
         }
 
         .logo-area h1 {
             margin: 0;
             font-size: 14px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             color: var(--accent-color);
         }
 
@@ -62,39 +62,39 @@
 
         .mirror-grid {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .btn {
             background-color: #21262d;
             border: 1px solid #30363d;
             color: var(--text-main);
-            padding: 6px 12px;
-            font-size: 12px;
+            padding: 5px 10px;
+            font-size: 11px;
             font-weight: 500;
             border-radius: 6px;
             cursor: pointer;
             transition: all 0.2s;
-            outline: none;
         }
 
         .btn:hover {
             border-color: var(--accent-color);
-            background-color: #262c36;
+            color: white;
         }
 
         .btn.active {
             background-color: rgba(56, 189, 248, 0.15);
             border-color: var(--accent-color);
             color: white;
-            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
         }
 
         .btn-reset {
-            background-color: rgba(248, 81, 73, 0.1);
             border-color: var(--danger);
             color: var(--danger);
+            background: rgba(248, 81, 73, 0.05);
         }
 
         .btn-reset:hover {
@@ -114,17 +114,22 @@
             border: none;
             background-color: var(--bg-color);
             display: block;
+            transition: opacity 0.3s ease;
         }
 
-        /* Индикатор загрузки */
-        .loader {
+        .loader-text {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: var(--accent-color);
+            color: var(--text-dim);
             font-size: 12px;
             z-index: -1;
+        }
+
+        @media (max-width: 800px) {
+            header { flex-direction: column; height: auto; padding: 10px; }
+            .mirror-grid { width: 100%; }
         }
     </style>
 </head>
@@ -132,11 +137,11 @@
 
     <header>
         <div class="logo-area">
-            <h1>FOSSpel AI Hub</h1>
-            <span>Zero-Cost Infrastructure v2.0 (WAN 2.2)</span>
+            <h1>FOSSpel HUB</h1>
+            <span>Wan2.2 Video (Zero-Cost)</span>
         </div>
 
-        <div class="mirror-grid" id="mirror-menu">
+        <div class="mirror-grid">
             <button class="btn active" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Mirror 1 (Turbo)</button>
             <button class="btn" onclick="loadSpace('https://r3gm-wan2-2.hf.space', this)">Mirror 2 (Stable)</button>
             <button class="btn" onclick="loadSpace('https://leogiscard-wan2-2-t2v.hf.space', this)">Mirror 3 (Fresh)</button>
@@ -145,11 +150,11 @@
             <button class="btn" onclick="loadSpace('https://multimodalart-wan2-2-t2v.hf.space', this)">Mirror 6</button>
         </div>
 
-        <button class="btn btn-reset" onclick="location.reload()">RESET IP (F5)</button>
+        <button class="btn btn-reset" onclick="location.reload()">СБРОС (F5)</button>
     </header>
 
     <div class="main-container">
-        <div class="loader">Подключение к Zero-GPU кластеру...</div>
+        <div class="loader-text">Подключение к прокси-туннелю FOSSpel...</div>
         <iframe 
             id="ai-frame" 
             src="" 
@@ -159,38 +164,45 @@
     </div>
 
     <script>
-        // ТВОЯ ТОЧКА ВХОДА (Cloudflare Worker v10)
-        const PROXY_HOST = 'https://fosspel-proxy.okuptcov4.workers.dev';
+        /**
+         * КОНФИГУРАЦИЯ ПРОКСИ
+         * Воркер v11 ожидает путь формата: PROXY/https://target.com/
+         */
+        const PROXY = 'https://fosspel-proxy.okuptcov4.workers.dev';
 
         function loadSpace(targetUrl, btnElement) {
-            // Визуальное переключение кнопок
+            // 1. Управление активным состоянием кнопок
             document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
             if (btnElement) btnElement.classList.add('active');
 
             const frame = document.getElementById('ai-frame');
             
-            // Очистка URL
+            // 2. Очистка целевого URL от лишних слешей
             const cleanTarget = targetUrl.replace(/\/+$/, "");
             
-            // Формирование пути для Worker v10: PROXY/TARGET/?__theme=dark
-            // Используем прямой технический URL Hugging Face
-            const proxiedUrl = `${PROXY_HOST}/${cleanTarget}/?__theme=dark`;
-
-            console.log("Loading proxied space:", proxiedUrl);
+            // 3. Создание уникального временного штампа (для изоляции сессий в разных вкладках)
+            const timestamp = new Date().getTime();
             
-            // Плавное переключение
-            frame.style.opacity = '0.5';
-            frame.src = proxiedUrl;
+            // 4. Формирование финальной ссылки для Воркера v11
+            // Структура: ПРОКСИ / ЦЕЛЬ / ПАРАМЕТРЫ
+            const finalUrl = `${PROXY}/${cleanTarget}/?__theme=dark&t=${timestamp}`;
+
+            console.log("FOSSpel Proxying to:", finalUrl);
+            
+            // Визуальный фидбек при смене зеркала
+            frame.style.opacity = '0.3';
+            frame.src = finalUrl;
             
             frame.onload = () => {
                 frame.style.opacity = '1';
             };
         }
 
-        // Автозапуск при загрузке страницы
+        // Автозагрузка первого зеркала при старте страницы
         window.onload = () => {
-            const defaultMirror = document.querySelector('.btn.active');
-            loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', defaultMirror);
+            const firstMirror = document.querySelector('.btn.active');
+            // Если Воркер v11 уже задеплоен, это запустит систему
+            loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', firstMirror);
         };
     </script>
 </body>
