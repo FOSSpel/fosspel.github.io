@@ -31,8 +31,14 @@
         if(btn) btn.classList.add('active');
         
         const frame = document.getElementById('ai-frame');
-        // Передаем только чистый URL спейса
-        frame.src = `${PROXY_URL}?target=${encodeURIComponent(target)}`;
+        
+        // Добавляем / к URL, если его нет
+        const cleanTarget = target.endsWith('/') ? target : target + '/';
+        
+        // ВАЖНО: принудительно добавляем __theme=dark и target в строку
+        const finalUrl = `${PROXY_URL}?target=${encodeURIComponent(cleanTarget)}&__theme=dark`;
+        
+        frame.src = finalUrl;
     }
 
     // Автостарт
