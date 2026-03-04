@@ -2,48 +2,40 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Wan2.2 AI Hub — FOSSpel</title>
+    <title>Wan2.2 FOSSpel AI Hub</title>
     <style>
-        body { margin: 0; background: #020617; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; color: white; }
-        .nav { background: #1e293b; padding: 10px; display: flex; gap: 10px; border-bottom: 2px solid #38bdf8; }
-        iframe { flex-grow: 1; border: none; width: 100%; height: 100%; background: #020617; }
-        .btn { background: #334155; border: 1px solid #38bdf8; color: white; padding: 5px 15px; cursor: pointer; border-radius: 4px; }
+        body { margin: 0; background: #020617; color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden; font-family: sans-serif; }
+        .nav { background: #111827; padding: 12px; display: flex; gap: 10px; border-bottom: 2px solid #38bdf8; align-items: center; }
+        iframe { flex-grow: 1; border: none; background: #020617; }
+        .btn { background: #1f2937; border: 1px solid #38bdf8; color: white; padding: 6px 15px; cursor: pointer; border-radius: 4px; }
         .btn.active { background: #38bdf8; color: #020617; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="nav">
-    <div style="margin-right: auto; font-weight: bold;">FOSSpel Wan2.2 Hub</div>
+    <div style="margin-right: auto; font-weight: bold; color: #38bdf8;">FOSSpel: WAN2.2 Hub</div>
     <button class="btn active" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Зеркало 1</button>
     <button class="btn" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview2.hf.space', this)">Зеркало 2</button>
-    <button class="btn" onclick="location.reload()" style="border-color: #ef4444;">F5 (Сброс лимита)</button>
+    <button class="btn" onclick="location.reload()" style="border-color: #ef4444;">F5 (Сброс лимитов)</button>
 </div>
 
 <iframe id="ai-frame" src=""></iframe>
 
 <script>
-    // ЗАМЕНИ НА СВОЙ ВОРКЕР
-    const PROXY_URL = 'https://fosspel-proxy.okuptcov4.workers.dev/';
+    const PROXY_URL = 'https://fosspel-proxy.okuptcov4.workers.dev'; // БЕЗ слеша в конце!
 
     function loadSpace(target, btn) {
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
         
         const frame = document.getElementById('ai-frame');
-        
-        // Добавляем / к URL, если его нет
-        const cleanTarget = target.endsWith('/') ? target : target + '/';
-        
-        // ВАЖНО: принудительно добавляем __theme=dark и target в строку
-        const finalUrl = `${PROXY_URL}?target=${encodeURIComponent(cleanTarget)}&__theme=dark`;
-        
-        frame.src = finalUrl;
+        // Формат: ПРОКСИ/ЦЕЛЬ
+        const cleanTarget = target.replace(/\/$/, "");
+        frame.src = `${PROXY_URL}/${cleanTarget}/?__theme=dark`;
     }
 
-    // Автостарт
     window.onload = () => loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space');
 </script>
-
 </body>
 </html>
