@@ -1,63 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>FOSSpel API Video</title>
+    <meta charset="UTF-8">
+    <title>FOSSpel Video Engine</title>
     <style>
-        body { background: #000; color: #38bdf8; font-family: monospace; padding: 20px; text-align: center; }
-        input { background: #111; border: 1px solid #38bdf8; color: #fff; padding: 10px; width: 300px; }
-        button { background: #38bdf8; color: #000; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
-        #status { margin: 20px; color: #aaa; }
-        video { max-width: 100%; margin-top: 20px; border: 2px solid #333; }
+        body { background: #020617; color: #38bdf8; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .container { background: #0f172a; padding: 30px; border-radius: 12px; border: 1px solid #1e293b; box-shadow: 0 0 20px rgba(56,189,248,0.1); width: 400px; text-align: center; }
+        h1 { font-size: 1.2rem; margin-bottom: 20px; letter-spacing: 2px; }
+        input { background: #020617; border: 1px solid #38bdf8; color: #fff; padding: 12px; width: 100%; box-sizing: border-box; border-radius: 6px; margin-bottom: 15px; outline: none; }
+        button { background: #38bdf8; color: #020617; border: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; cursor: pointer; width: 100%; transition: 0.3s; }
+        button:disabled { background: #1e293b; color: #475569; }
+        #status { margin-top: 20px; font-size: 0.8rem; color: #94a3b8; min-height: 40px; }
+        #result { margin-top: 20px; width: 100%; }
+        video { width: 100%; border-radius: 8px; border: 1px solid #38bdf8; }
     </style>
 </head>
 <body>
-    <h1>WAN 2.1 API GENERATOR</h1>
-    <input type="text" id="prompt" placeholder="Введите промпт (на англ)..." value="A cat in space">
-    <button onclick="generate()">GENERATE VIDEO</button>
-    <div id="status">Ожидание...</div>
-    <div id="result"></div>
+
+    <div class="container">
+        <h1>WAN 2.1 ENGINE</h1>
+        <input type="text" id="prompt" placeholder="Опишите видео (English)..." value="Cyberpunk city in rain, neon lights">
+        <button id="genBtn" onclick="run()">GENERATE VIDEO</button>
+        <div id="status">Ready to work.</div>
+        <div id="result"></div>
+    </div>
 
     <script>
-        const API_URL = 'https://fosspel-proxy.okuptcov4.workers.dev';
+        // ТВОЙ ВОРКЕР
+        const PROXY = 'https://fosspel-proxy.okuptcov4.workers.dev';
 
-        async function generate() {
+        async function run() {
             const prompt = document.getElementById('prompt').value;
             const status = document.getElementById('status');
-            status.innerText = "Шаг 1: Подключение к очереди...";
+            const btn = document.getElementById('genBtn');
+            const resultDiv = document.getElementById('result');
+
+            btn.disabled = true;
+            resultDiv.innerHTML = "";
+            status.innerHTML = "Initializing session...";
 
             try {
-                // Отправляем запрос в очередь
-                const res = await fetch(`${API_URL}/queue/join`, {
+                // 1. Входим в очередь
+                const joinRes = await fetch(`${PROXY}/queue/join`, {
                     method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         data: [prompt, null, "1280*720", 20, 5],
-                        event_data: null,
-                        fn_index: 1, // Индекс функции генерации
+                        fn_index: 1,
                         trigger_id: 6
                     })
                 });
-                const data = await res.json();
-                const hash = data.hash;
+                const { hash } = await joinRes.json();
+                status.innerHTML = `In queue... (Hash: ${hash})`;
 
-                status.innerText = "Шаг 2: Генерация (ждем поток)...";
-                
-                // Опрашиваем статус (упрощенно)
-                const check = setInterval(async () => {
-                    const statusRes = await fetch(`${API_URL}/queue/data?hash=${hash}`);
-                    const statusData = await statusRes.json();
+                // 2. Цикл опроса статуса
+                const checkStatus = setInterval(async () => {
+                    const res = await fetch(`${PROXY}/queue/data?hash=${hash}`);
+                    const text = await res.text();
                     
-                    if (statusData.status === "complete") {
-                        clearInterval(check);
-                        const videoUrl = statusData.output.data[0].video.url;
-                        status.innerText = "Готово!";
-                        document.getElementById('result').innerHTML = `<video src="${API_URL}${videoUrl}" controls autoplay></video>`;
+                    // Gradio шлет поток данных (SSE), парсим его вручную
+                    if (text.includes('"status": "complete"')) {
+                        clearInterval(checkStatus);
+                        const data = JSON.parse(text.split('data: ')[1]);
+                        const videoUrl = data.output.data[0].video.url;
+                        
+                        status.innerHTML = "Success! Rendering...";
+                        resultDiv.innerHTML = `<video src="${PROXY}${videoUrl}" controls autoplay></video>`;
+                        btn.disabled = false;
+                    } else if (text.includes('"status": "error"')) {
+                        clearInterval(checkStatus);
+                        status.innerHTML = "Error: GPU Busy. Try again.";
+                        btn.disabled = false;
                     } else {
-                        status.innerText = "Генерируем... " + (statusData.rank ? `Очередь: ${statusData.rank}` : "");
+                        status.innerHTML = "Generating frames... <br>(Usually takes 30-60s)";
                     }
-                }, 3000);
+                }, 4000);
 
             } catch (e) {
-                status.innerText = "Ошибка: " + e.message;
+                status.innerHTML = "Critical Error: " + e.message;
+                btn.disabled = false;
             }
         }
     </script>
