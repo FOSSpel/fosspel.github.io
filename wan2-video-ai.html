@@ -40,9 +40,12 @@
         if(btn) btn.classList.add('active');
         
         const frame = document.getElementById('proxy-frame');
-        // Добавляем параметр __theme=dark для красоты
-        const finalUrl = `${PROXY_BASE}?target=${encodeURIComponent(target + "/?__theme=dark")}`;
-        frame.src = finalUrl;
+        
+        // ВАЖНО: Добавляем /+/ перед параметрами для корректного встраивания Gradio
+        const cleanTarget = target.replace(/\/$/, "");
+        const embedUrl = `${cleanTarget}/+/embed?__theme=dark`;
+        
+        frame.src = `${PROXY_BASE}?target=${encodeURIComponent(embedUrl)}`;
     }
 
     // Автозагрузка первого зеркала
