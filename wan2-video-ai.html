@@ -2,49 +2,196 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Wan2.2 Video Hub — FOSSpel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Защита от передачи реферера на HF, чтобы не палить домен GitHub -->
+    <meta name="referrer" content="no-referrer">
+    
+    <title>Wan2.2 Video AI — Бесплатная генерация видео без лимитов | FOSSpel</title>
+    
     <style>
-        body { margin: 0; background: #010409; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; color: #c9d1d9; }
-        .nav { background: #0d1117; padding: 10px; display: flex; gap: 10px; border-bottom: 2px solid #38bdf8; align-items: center; }
-        iframe { flex-grow: 1; border: none; background: #010409; }
-        .btn { background: #21262d; border: 1px solid #30363d; color: #8b949e; padding: 6px 16px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
-        .btn:hover { border-color: #38bdf8; color: white; }
-        .btn.active { border-color: #38bdf8; color: white; background: #38bdf822; box-shadow: 0 0 10px #38bdf855; }
-        .logo { font-weight: bold; color: #38bdf8; margin-right: auto; text-transform: uppercase; letter-spacing: 1px; }
+        :root {
+            --bg-color: #010409;
+            --panel-color: #0d1117;
+            --accent-color: #38bdf8;
+            --text-main: #c9d1d9;
+            --text-dim: #8b949e;
+            --danger: #f85149;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--panel-color);
+            padding: 12px 20px;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-area h1 {
+            margin: 0;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent-color);
+        }
+
+        .logo-area span {
+            font-size: 10px;
+            color: var(--text-dim);
+        }
+
+        .mirror-grid {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: #21262d;
+            border: 1px solid #30363d;
+            color: var(--text-main);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .btn:hover {
+            border-color: var(--accent-color);
+            background-color: #262c36;
+        }
+
+        .btn.active {
+            background-color: rgba(56, 189, 248, 0.15);
+            border-color: var(--accent-color);
+            color: white;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+        }
+
+        .btn-reset {
+            background-color: rgba(248, 81, 73, 0.1);
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-reset:hover {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .main-container {
+            flex-grow: 1;
+            position: relative;
+            background-color: var(--bg-color);
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: var(--bg-color);
+            display: block;
+        }
+
+        /* Индикатор загрузки */
+        .loader {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent-color);
+            font-size: 12px;
+            z-index: -1;
+        }
     </style>
 </head>
 <body>
 
-<!-- Вставь это в блок .nav твоего HTML -->
-<div class="nav">
-    <div class="logo">FOSSpel AI Hub</div>
-    <div class="controls">
-        <button class="btn active" onclick="load('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Mirror 1 (Main)</button>
-        <button class="btn" onclick="load('https://fffiloni-wan2-1-14b-fp8-t2v-test.hf.space', this)">Mirror 2 (Alt)</button>
-        <button class="btn" onclick="load('https://leogiscard-wan2-2-t2v.hf.space', this)">Mirror 3 (Fresh)</button>
-        <button class="btn" onclick="location.reload()" style="background:#ef4444; border:none;">RESET IP (F5)</button>
+    <header>
+        <div class="logo-area">
+            <h1>FOSSpel AI Hub</h1>
+            <span>Zero-Cost Infrastructure v2.0 (WAN 2.2)</span>
+        </div>
+
+        <div class="mirror-grid" id="mirror-menu">
+            <button class="btn active" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Mirror 1 (Turbo)</button>
+            <button class="btn" onclick="loadSpace('https://r3gm-wan2-2.hf.space', this)">Mirror 2 (Stable)</button>
+            <button class="btn" onclick="loadSpace('https://leogiscard-wan2-2-t2v.hf.space', this)">Mirror 3 (Fresh)</button>
+            <button class="btn" onclick="loadSpace('https://fffiloni-wan2-1-t2v.hf.space', this)">Mirror 4 (Wan 2.1)</button>
+            <button class="btn" onclick="loadSpace('https://nyanko7-wan2-2-t2v.hf.space', this)">Mirror 5</button>
+            <button class="btn" onclick="loadSpace('https://multimodalart-wan2-2-t2v.hf.space', this)">Mirror 6</button>
+        </div>
+
+        <button class="btn btn-reset" onclick="location.reload()">RESET IP (F5)</button>
+    </header>
+
+    <div class="main-container">
+        <div class="loader">Подключение к Zero-GPU кластеру...</div>
+        <iframe 
+            id="ai-frame" 
+            src="" 
+            allow="accelerometer; gyroscope; microphone; camera; display-capture; encrypted-media; clipboard-read; clipboard-write"
+            referrerpolicy="no-referrer"
+        ></iframe>
     </div>
-</div>
 
-<iframe id="target-frame" src=""></iframe>
+    <script>
+        // ТВОЯ ТОЧКА ВХОДА (Cloudflare Worker v10)
+        const PROXY_HOST = 'https://fosspel-proxy.okuptcov4.workers.dev';
 
-<script>
-    // ТВОЙ ВОРКЕР
-    const PROXY = 'https://fosspel-proxy.okuptcov4.workers.dev';
+        function loadSpace(targetUrl, btnElement) {
+            // Визуальное переключение кнопок
+            document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
 
-    function load(url, btn) {
-        document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const frame = document.getElementById('target-frame');
-        // Очищаем URL от слешей и формируем путь: ПРОКСИ/ЦЕЛЬ/
-        const cleanUrl = url.replace(/\/+$/, "");
-        frame.src = `${PROXY}/${cleanUrl}/?__theme=dark`;
-    }
+            const frame = document.getElementById('ai-frame');
+            
+            // Очистка URL
+            const cleanTarget = targetUrl.replace(/\/+$/, "");
+            
+            // Формирование пути для Worker v10: PROXY/TARGET/?__theme=dark
+            // Используем прямой технический URL Hugging Face
+            const proxiedUrl = `${PROXY_HOST}/${cleanTarget}/?__theme=dark`;
 
-    // Старт
-    window.onload = () => load('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', document.querySelector('.btn.active'));
-</script>
+            console.log("Loading proxied space:", proxiedUrl);
+            
+            // Плавное переключение
+            frame.style.opacity = '0.5';
+            frame.src = proxiedUrl;
+            
+            frame.onload = () => {
+                frame.style.opacity = '1';
+            };
+        }
 
+        // Автозапуск при загрузке страницы
+        window.onload = () => {
+            const defaultMirror = document.querySelector('.btn.active');
+            loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', defaultMirror);
+        };
+    </script>
 </body>
 </html>
