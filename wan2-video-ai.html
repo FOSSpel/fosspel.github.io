@@ -2,53 +2,40 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Wan2.2 Video Hub — FOSSpel</title>
+    <title>Wan2.2 AI Hub — FOSSpel</title>
     <style>
-        body { margin: 0; background: #020617; color: white; font-family: sans-serif; height: 100vh; display: flex; flex-direction: column; }
-        .nav { background: #1e293b; padding: 10px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #38bdf8; }
-        .controls { display: flex; gap: 10px; }
-        .btn { background: #334155; border: 1px solid #38bdf8; color: white; padding: 5px 15px; cursor: pointer; border-radius: 4px; transition: 0.3s; }
-        .btn:hover { background: #38bdf8; color: #020617; }
-        .btn.active { background: #38bdf8; color: #020617; box-shadow: 0 0 15px #38bdf8; }
-        .container { flex-grow: 1; position: relative; }
-        iframe { width: 100%; height: 100%; border: none; background: #020617; }
-        .limit-hint { font-size: 0.8rem; color: #94a3b8; margin-right: 20px; }
+        body { margin: 0; background: #020617; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; color: white; }
+        .nav { background: #1e293b; padding: 10px; display: flex; gap: 10px; border-bottom: 2px solid #38bdf8; }
+        iframe { flex-grow: 1; border: none; width: 100%; height: 100%; background: #020617; }
+        .btn { background: #334155; border: 1px solid #38bdf8; color: white; padding: 5px 15px; cursor: pointer; border-radius: 4px; }
+        .btn.active { background: #38bdf8; color: #020617; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="nav">
-    <div style="font-weight: bold; color: #38bdf8;">FOSSpel: Wan2.2 Video (Zero-Cost)</div>
-    <div class="controls">
-        <span class="limit-hint">Если "Limit reached" — нажми 👉</span>
-        <button class="btn" style="background: #ef4444;" onclick="location.reload()">СБРОСИТЬ ЛИМИТ (F5)</button>
-        <button class="btn active" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Зеркало 1</button>
-        <button class="btn" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview2.hf.space', this)">Зеркало 2</button>
-        <button class="btn" onclick="loadSpace('https://zerogpu-aoti-wan2-2-fp8da-aoti-faster.hf.space', this)">Зеркало 3 (H100)</button>
-    </div>
+    <div style="margin-right: auto; font-weight: bold;">FOSSpel Wan2.2 Hub</div>
+    <button class="btn active" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space', this)">Зеркало 1</button>
+    <button class="btn" onclick="loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview2.hf.space', this)">Зеркало 2</button>
+    <button class="btn" onclick="location.reload()" style="border-color: #ef4444;">F5 (Сброс лимита)</button>
 </div>
 
-<div class="container">
-    <iframe id="proxy-frame" src=""></iframe>
-</div>
+<iframe id="ai-frame" src=""></iframe>
 
 <script>
-    const PROXY_BASE = 'https://fosspel-proxy.okuptcov4.workers.dev/';
+    // ЗАМЕНИ НА СВОЙ ВОРКЕР
+    const PROXY_URL = 'https://fosspel-proxy.okuptcov4.workers.dev/';
 
     function loadSpace(target, btn) {
         document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
         if(btn) btn.classList.add('active');
         
-        const frame = document.getElementById('proxy-frame');
-        
-        // ВАЖНО: Добавляем /+/ перед параметрами для корректного встраивания Gradio
-        const cleanTarget = target.replace(/\/$/, "");
-        const embedUrl = `${cleanTarget}/+/embed?__theme=dark`;
-        
-        frame.src = `${PROXY_BASE}?target=${encodeURIComponent(embedUrl)}`;
+        const frame = document.getElementById('ai-frame');
+        // Передаем только чистый URL спейса
+        frame.src = `${PROXY_URL}?target=${encodeURIComponent(target)}`;
     }
 
-    // Автозагрузка первого зеркала
+    // Автостарт
     window.onload = () => loadSpace('https://r3gm-wan2-2-fp8da-aoti-preview.hf.space');
 </script>
 
