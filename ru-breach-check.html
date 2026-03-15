@@ -102,7 +102,9 @@
                 results.style.display = 'block';
                 if (data.found > 0) {
                     statusMsg.className = 'status-card status-danger';
-                    statusMsg.innerHTML = `<h3>Внимание!</h3> Обнаружено в <strong>${data.found}</strong> утечках данных.<br><div class="source-list">${data.sources.map(s => `<span class="source-tag">${s}</span>`).join('')}</div>`;
+                    statusMsg.innerHTML = `<h3>Внимание!</h3> Обнаружено в утечках: <strong>${data.found}</strong> раз.<br>
+                    <p style="font-size: 0.9rem; margin-top:10px;">Данные утекли через следующие сервисы:</p>
+                    <div class="source-list">${data.sources.map(s => `<span class="source-tag">${s}</span>`).join('')}</div>`;
                     funnelText.innerText = "Чтобы увидеть детали этих взломов и получать мгновенные уведомления о новых утечках, воспользуйтесь нашим бесплатным Telegram-ботом.";
                 } else {
                     statusMsg.className = 'status-card status-success';
