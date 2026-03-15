@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Breach Check | {FOSSpel}</title>
+    <meta name="description" content="Check if your email has been leaked in data breaches. Safe, anonymous, and free.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    <style>
+        .search-box { background: #2a2a2a; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center; }
+        .search-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 6px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1rem; margin-bottom: 1rem; }
+        .check-btn { background: #3498db; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .check-btn:hover { background: #2980b9; }
+        .check-btn:disabled { background: #555; cursor: not-allowed; }
+        
+        #results { margin-top: 2rem; display: none; }
+        .status-card { padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; }
+        .status-danger { background: #c0392b22; border: 1px solid #c0392b; color: #e74c3c; }
+        .status-success { background: #27ae6022; border: 1px solid #27ae60; color: #2ecc71; }
+        
+        .source-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; justify-content: center; }
+        .source-tag { background: #444; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; }
+        
+        .funnel-box { background: #3498db11; border: 1px dashed #3498db; padding: 1.5rem; border-radius: 12px; margin-top: 2rem; }
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher"><a href="ru-breach-check.html">RU</a> | <a href="breach-check.html" class="active">EN</a></div>
+    
+    <header class="hero" style="padding: 3rem 1rem;">
+        <a href="index.html" style="text-decoration: none;"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" style="width: 80px;"></a>
+        <h1>Email Breach Check</h1>
+        <p class="subtitle">Is your data safe? Check our global breach database.</p>
+    </header>
+
+    <main class="container">
+        <section class="search-box">
+            <input type="email" id="emailInput" class="search-input" placeholder="Enter your email address..." required>
+            <br>
+            <button id="checkBtn" class="check-btn">Check Security</button>
+        </section>
+
+        <section id="results">
+            <div id="statusMessage" class="status-card"></div>
+            
+            <div class="funnel-box">
+                <h3>Take Action</h3>
+                <p id="funnelText"></p>
+                <a href="https://t.me/YOUR_BOT_USERNAME" target="_blank" class="button">Go to Telegram Bot</a>
+            </div>
+        </section>
+
+        <section id="faq" style="margin-top: 4rem; opacity: 0.8; font-size: 0.9rem;">
+            <h2>FAQ</h2>
+            <p><strong>Is it anonymous?</strong> Yes, we do not store your email. The check is performed via an encrypted connection to our secure Cloudflare node.</p>
+            <p><strong>What should I do if found?</strong> Change your passwords immediately and enable Two-Factor Authentication (2FA).</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>Stay blessed! {FOSSpel} © 2024</p>
+    </footer>
+
+    <script>
+        const WORKER_URL = "fosspel-api.okuptcov4.workers.dev";
+        // --- ЗАМЕНИ НА ИМЯ СВОЕГО БОТА ---
+        const BOT_LINK = "https://t.me/PortfolioAggregator_bot"; 
+
+        const btn = document.getElementById('checkBtn');
+        const input = document.getElementById('emailInput');
+        const results = document.getElementById('results');
+        const statusMsg = document.getElementById('statusMessage');
+        const funnelText = document.getElementById('funnelText');
+
+        btn.addEventListener('click', async () => {
+            const email = input.value.trim();
+            if (!email || !email.includes('@')) {
+                alert('Please enter a valid email');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader"></span> Checking...';
+            results.style.display = 'none';
+
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email, source: 'web' })
+                });
+
+                const data = await response.json();
+
+                results.style.display = 'block';
+                if (data.found > 0) {
+                    statusMsg.className = 'status-card status-danger';
+                    statusMsg.innerHTML = `<h3>Warning!</h3> Found in <strong>${data.found}</strong> data breaches.<br><div class="source-list">${data.sources.map(s => `<span class="source-tag">${s}</span>`).join('')}</div>`;
+                    funnelText.innerText = "To see details of these leaks and get instant alerts for future hacks, use our free Telegram bot.";
+                } else {
+                    statusMsg.className = 'status-card status-success';
+                    statusMsg.innerHTML = `<h3>Good News!</h3> No breaches found for this email in our current database.`;
+                    funnelText.innerText = "Stay safe! Subscribe to our 24/7 monitoring service in Telegram to be the first to know if your data leaks.";
+                }
+
+            } catch (error) {
+                alert('Error connecting to the server. Please try again later.');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Check Security';
+            }
+        });
+    </script>
+</body>
+</html>
