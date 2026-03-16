@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Password Security Check | {FOSSpel}</title>
-    <meta name="description" content="Secure and anonymous password check against 10 billion leaks without sending the actual password online.">
+    <title>Breach & Password Check | {FOSSpel}</title>
+    <meta name="description" content="Verify your digital safety. Check if your passwords were leaked in 10B+ data breaches. 100% anonymous, secure, and free identity protection by {FOSSpel}.">
 
     <!-- Open Graph / Facebook / Telegram / Discord -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fosspel.github.io/breach-check.html">
     <meta property="og:title" content="Is your password safe? Check it anonymously on {FOSSpel}">
-    <meta property="og:description" content="Instant password breach check against 10+ billion records without sending your password over the internet.">
-    <meta property="og:image" content="https://fosspel.github.io/og_image.png?v=2">
+    <meta property="og:description" content="Check if your password is leaked across 10 billion+ records with our 100% anonymous tool. Secure K-Anonymity protocol ensures your data never leaves your device.">
+    <meta property="og:image" content="https://fosspel.github.io/og_image.png?v=3">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
 
@@ -19,10 +19,10 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:url" content="https://fosspel.github.io/breach-check.html">
     <meta name="twitter:title" content="Is your password safe? Check it anonymously on {FOSSpel}">
-    <meta name="twitter:description" content="Instant password breach check against 10+ billion records without sending your password over the internet.">
-    <meta name="twitter:image" content="https://fosspel.github.io/og_image.png?v=2">
+    <meta name="twitter:description" content="Instant password breach check against 10+ billion records. 100% anonymous tool: no password is sent over the net. Fast, free, and secure identity protection.">
+    <meta name="twitter:image" content="https://fosspel.github.io/og_image.png?v=3">
 
-    <!-- Icons and Manifest (Matching your main page) -->
+    <!-- Icons and Manifest -->
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
@@ -99,7 +99,7 @@
             <div class="security-tech">
                 <span class="tech-icon">🛡️</span>
                 <strong>Is it safe? Yes, 100%.</strong>
-                <p>Your password never leaves this device. We use <strong>k-Anonymity</strong> technology: your browser converts the password into a complex hash (SHA-1), and we only send the first 5 characters of that hash to the server. This is enough to find a match but impossible for anyone (including us) to ever know your actual password.</p>
+                <p>Your password never leaves this device. We use <strong>k-Anonymity</strong> technology: your browser converts the password into a SHA-1 hash, and we only send the first 5 characters to the server. It is impossible for anyone to know your actual password.</p>
             </div>
         </section>
 
@@ -131,7 +131,7 @@
             <h2 style="color: var(--accent);">Expert Email Breach Check</h2>
             <p>If checking your password isn't enough, use the <strong>Identity Leak Checker</strong> by the Hasso Plattner Institute (Germany).</p>
             <p class="info-text">
-                This is the academic standard for darknet monitoring. To prevent hackers from mass-collecting data (reconnaissance), HPI sends the detailed breach report **only to your verified email address**.
+                This is the academic standard for darknet monitoring. To prevent reconnaissance attacks, HPI sends the detailed report **only to your verified email address**.
             </p>
             <div style="text-align: center; margin-top: 1.5rem;">
                 <a href="https://sec.hpi.de/ilc/search" target="_blank" onclick="ym(107077871, 'reachGoal', 'hpi_clicked')" class="button" style="background: var(--accent);">Request HPI Report (Email)</a>
@@ -187,11 +187,11 @@
                 if (count > 0) {
                     ym(107077871, 'reachGoal', 'pass_leaked');
                     status.className = 'status-box danger';
-                    status.innerHTML = `⚠️ Warning! This password was found <strong>${parseInt(count).toLocaleString()}</strong> times in data breaches. It is compromised. Change it immediately!`;
+                    status.innerHTML = `⚠️ Warning! This password was found <strong>${parseInt(count).toLocaleString()}</strong> times in data breaches. Change it immediately!`;
                 } else {
                     ym(107077871, 'reachGoal', 'pass_safe');
                     status.className = 'status-box success';
-                    status.innerHTML = `✅ All clear! No matches found in known breach databases. This password is safe (provided it's complex).`;
+                    status.innerHTML = `✅ Safe! No matches found in known breach databases.`;
                 }
             } catch (e) {
                 status.innerHTML = 'Network error. Please disable VPN or try again later.';
