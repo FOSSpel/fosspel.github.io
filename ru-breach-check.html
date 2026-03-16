@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проверка утечек почты и паролей | {FOSSpel}</title>
-    <meta name="description" content="Безопасная проверка вашего email и пароля на утечки в базах данных даркнета. Используем академические стандарты HPI и анонимный протокол HIBP.">
+    <title>Центр проверки утечек | {FOSSpel}</title>
+    <meta name="description" content="Безопасная проверка вашего email и пароля на утечки в базах данных. Используем академические стандарты Hasso Plattner Institute.">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,13 +13,16 @@
     
     <style>
         .checker-section { background: #2a2a2a; padding: 2rem; border-radius: 12px; margin: 2rem 0; border: 1px solid #333; }
-        .iframe-container { width: 100%; height: 600px; border: 1px solid #444; border-radius: 8px; overflow: hidden; background: #fff; margin-top: 1rem; }
+        .hpi-bridge { background: #1a1a1a; padding: 2.5rem; border-radius: 8px; border: 1px dashed #444; text-align: center; margin-top: 1.5rem; }
+        .hpi-logo { width: 120px; margin-bottom: 1rem; opacity: 0.8; }
         .pass-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 6px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1rem; margin-bottom: 1rem; }
-        .status-box { padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; font-weight: 600; }
-        .danger { background: #c0392b; color: white; }
-        .success { background: #27ae60; color: white; }
-        .info-text { font-size: 0.9rem; color: #aaa; line-height: 1.6; margin-top: 1rem; }
-        h2 { border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 5px; margin-bottom: 1.5rem; }
+        .status-box { padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; font-weight: 600; text-align: center; }
+        .danger { background: #c0392b22; border: 1px solid #c0392b; color: #e74c3c; }
+        .success { background: #27ae6022; border: 1px solid #27ae60; color: #2ecc71; }
+        .info-text { font-size: 0.95rem; color: #bbb; line-height: 1.6; margin-top: 1rem; }
+        h2 { border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 5px; margin-bottom: 1rem; }
+        .btn-link { display: inline-block; background: #3498db; color: white; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.3s; margin-top: 1rem; }
+        .btn-link:hover { background: #2980b9; transform: translateY(-2px); }
     </style>
 
     <!-- Yandex.Metrika counter -->
@@ -36,54 +39,53 @@
 <body>
     <div class="lang-switcher"><a href="ru-breach-check.html" class="active">RU</a> | <a href="breach-check.html">EN</a></div>
     
-    <header class="hero" style="padding: 2rem 1rem;">
+    <header class="hero" style="padding: 2.5rem 1rem;">
         <a href="ru.html"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" style="width: 60px;"></a>
         <h1>Центр безопасности данных</h1>
-        <p class="subtitle">Инструменты академического уровня для защиты вашей цифровой личности.</p>
+        <p class="subtitle">Использование мировых стандартов для защиты вашей приватности.</p>
     </header>
 
     <main class="container">
-        <!-- БЛОК 1: ПРОВЕРКА EMAIL (HPI IFRAME) -->
+        <!-- БЛОК 1: EMAIL (HPI BRIDGE) -->
         <section class="checker-section">
             <h2>1. Проверка Email на утечки</h2>
             <p class="info-text">
-                Мы используем технологии <strong>Hasso Plattner Institute (Германия)</strong>. 
-                В целях безопасности результаты проверки не выводятся на экран, а отправляются лично вам на почту. 
-                Это защищает вас от "разведки" хакерами, которые могли бы использовать наш сайт для поиска уязвимых целей.
+                Мы используем <strong>Identity Leak Checker</strong> от Института Хассо Платтнера (HPI, Германия). 
+                Это единственный академический сервис, гарантирующий точность данных.
             </p>
-            
-            <div class="iframe-container">
-                <iframe src="https://sec.hpi.de/ilc/search" width="100%" height="100%" frameborder="0"></iframe>
+            <div class="hpi-bridge">
+                <p style="margin-bottom: 1.5rem;"><strong>Протокол безопасности Anti-Reconnaissance:</strong><br>
+                Чтобы результаты вашей проверки не были перехвачены в браузере злоумышленниками, детальный отчет отправляется напрямую на ваш email.</p>
+                <a href="https://sec.hpi.de/ilc/search" target="_blank" class="btn-link">Запросить отчет безопасности HPI</a>
+                <p style="font-size: 0.8rem; margin-top: 1rem; color: #777;">Вы перейдете на официальный сервер sec.hpi.de</p>
             </div>
-            <p class="info-text" style="text-align: center;">
-                Если окно выше не загрузилось, используйте <a href="https://sec.hpi.de/ilc/search" target="_blank" style="color:#3498db;">прямую ссылку на портал HPI</a>.
-            </p>
         </section>
 
-        <!-- БЛОК 2: ПРОВЕРКА ПАРОЛЯ (HIBP API) -->
+        <!-- БЛОК 2: PASSWORD (HIBP) -->
         <section class="checker-section">
             <h2>2. Проверка пароля на взлом</h2>
             <p class="info-text">
-                Введите пароль, чтобы узнать, фигурировал ли он в известных утечках. Мы не отправляем ваш пароль! 
-                Используется протокол K-Anonymity: на сервер уходит только часть хеша.
+                Введите пароль, чтобы мгновенно проверить его по базе из 10 миллиардов скомпрометированных паролей. 
+                <strong>Мы не видим ваш пароль:</strong> используется технология k-Anonymity (анонимное хеширование).
             </p>
-            <input type="password" id="passInput" class="pass-input" placeholder="Введите пароль для проверки...">
-            <br>
-            <button onclick="checkPassword()" class="button">Проверить пароль</button>
-            <div id="passStatus" class="status-box"></div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <input type="password" id="passInput" class="pass-input" placeholder="Введите ваш пароль...">
+                <br>
+                <button onclick="checkPassword()" class="button">Проверить безопасность</button>
+                <div id="passStatus" class="status-box"></div>
+            </div>
         </section>
 
-        <!-- SEO / ОПИСАНИЕ -->
-        <section style="margin-top: 4rem;">
-            <h2>Почему это важно?</h2>
+        <!-- SEO ОПИСАНИЕ -->
+        <section style="margin-top: 4rem; border-top: 1px solid #333; padding-top: 2rem;">
             <div class="contact-grid">
                 <div class="contact-column">
-                    <h3>Академический стандарт</h3>
-                    <p>Hasso Plattner Institute (HPI) — мировой лидер в области кибербезопасности. Их база Identity Leak Checker содержит информацию о более чем 14 миллиардах украденных аккаунтов.</p>
+                    <h3>Почему нет мгновенного результата по почте?</h3>
+                    <p>Отображение утечек прямо на сайте позволяет хакерам массово проверять списки Email (разведка), чтобы находить уязвимых пользователей. {FOSSpel} блокирует эту возможность, используя академический метод доставки отчета только владельцу почты.</p>
                 </div>
                 <div class="contact-column">
-                    <h3>Принцип анонимности</h3>
-                    <p>Проект {FOSSpel} не хранит ваши данные. Проверка пароля реализована через API HaveIBeenPwned с использованием SHA-1 хеширования, что делает невозможным перехват вашего пароля.</p>
+                    <h3>Как работает проверка пароля?</h3>
+                    <p>Ваш пароль преобразуется в SHA-1 хеш. Мы отправляем серверу только первые 5 символов этого хеша. Этого достаточно для поиска совпадений, но абсолютно недостаточно для того, чтобы кто-то узнал ваш реальный пароль.</p>
                 </div>
             </div>
         </section>
@@ -96,11 +98,10 @@
             if (!password) return;
 
             status.style.display = 'block';
+            status.innerHTML = 'Сверяем с базами данных...';
             status.className = 'status-box';
-            status.innerHTML = 'Проверяем...';
 
             try {
-                // Хешируем пароль в SHA-1
                 const msgBuffer = new TextEncoder().encode(password);
                 const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
                 const hashArray = Array.from(new Uint8Array(hashBuffer));
@@ -113,27 +114,25 @@
                 const data = await response.text();
                 
                 const lines = data.split('\n');
-                let found = false;
                 let count = 0;
 
                 for (let line of lines) {
                     const [lineSuffix, lineCount] = line.split(':');
-                    if (lineSuffix === suffix) {
-                        found = true;
+                    if (lineSuffix.trim() === suffix) {
                         count = lineCount;
                         break;
                     }
                 }
 
-                if (found) {
+                if (count > 0) {
                     status.className = 'status-box danger';
-                    status.innerHTML = `⚠️ Пароль НЕБЕЗОПАСЕН! Он найден в базах ${parseInt(count).toLocaleString()} раз. Смените его!`;
+                    status.innerHTML = `⚠️ Пароль ВЗЛОМАН! Он найден в утечках ${parseInt(count).toLocaleString()} раз. Рекомендуем сменить его.`;
                 } else {
                     status.className = 'status-box success';
-                    status.innerHTML = `✅ Этот пароль не найден в известных утечках.`;
+                    status.innerHTML = `✅ Этот пароль безопасен. Совпадений в базах не найдено.`;
                 }
             } catch (e) {
-                status.innerHTML = 'Ошибка проверки. Попробуйте позже.';
+                status.innerHTML = 'Ошибка сети. Пожалуйста, попробуйте позже.';
             }
         }
     </script>
