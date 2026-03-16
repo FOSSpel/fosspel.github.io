@@ -3,26 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Центр проверки утечек | {FOSSpel}</title>
-    <meta name="description" content="Безопасная проверка вашего email и пароля на утечки в базах данных. Используем академические стандарты Hasso Plattner Institute.">
+    <title>Проверка безопасности пароля | {FOSSpel}</title>
     
+    <!-- Open Graph для красивого превью в соцсетях -->
+    <meta property="og:title" content="Твой пароль в безопасности? Проверь анонимно на {FOSSpel}">
+    <meta property="og:description" content="Мгновенная проверка пароля по базе из 10 миллиардов утечек без отправки самого пароля в сеть.">
+    <meta property="og:image" content="https://fosspel.github.io/og_image.png">
+    <meta property="og:url" content="https://fosspel.github.io/ru-breach-check.html">
+    <meta name="twitter:card" content="summary_large_image">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=1.2">
     
     <style>
-        .checker-section { background: #2a2a2a; padding: 2rem; border-radius: 12px; margin: 2rem 0; border: 1px solid #333; }
-        .hpi-bridge { background: #1a1a1a; padding: 2.5rem; border-radius: 8px; border: 1px dashed #444; text-align: center; margin-top: 1.5rem; }
-        .hpi-logo { width: 120px; margin-bottom: 1rem; opacity: 0.8; }
-        .pass-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 6px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1rem; margin-bottom: 1rem; }
-        .status-box { padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; font-weight: 600; text-align: center; }
-        .danger { background: #c0392b22; border: 1px solid #c0392b; color: #e74c3c; }
-        .success { background: #27ae6022; border: 1px solid #27ae60; color: #2ecc71; }
-        .info-text { font-size: 0.95rem; color: #bbb; line-height: 1.6; margin-top: 1rem; }
-        h2 { border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 5px; margin-bottom: 1rem; }
-        .btn-link { display: inline-block; background: #3498db; color: white; padding: 14px 28px; border-radius: 6px; text-decoration: none; font-weight: 600; transition: 0.3s; margin-top: 1rem; }
-        .btn-link:hover { background: #2980b9; transform: translateY(-2px); }
+        :root { --accent: #3498db; --danger: #e74c3c; --success: #2ecc71; }
+        .hero-mini { padding: 3rem 1rem 1rem; text-align: center; }
+        .main-card { background: #2a2a2a; border: 1px solid #333; border-radius: 16px; padding: 2.5rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .pass-container { position: relative; max-width: 500px; margin: 1.5rem auto; }
+        .pass-input { width: 100%; padding: 16px; border-radius: 8px; border: 2px solid #444; background: #1a1a1a; color: white; font-size: 1.2rem; text-align: center; outline: none; transition: 0.3s; }
+        .pass-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(52, 152, 219, 0.3); }
+        
+        .status-box { padding: 1.2rem; border-radius: 8px; margin-top: 1.5rem; display: none; font-weight: 600; line-height: 1.4; animation: fadeIn 0.5s; }
+        .danger { background: rgba(231, 76, 60, 0.15); border: 1px solid var(--danger); color: #ff7675; }
+        .success { background: rgba(46, 204, 113, 0.15); border: 1px solid var(--success); color: #55efc4; }
+
+        .use-cases { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 3rem 0; }
+        .case-item { background: #222; padding: 1.5rem; border-radius: 12px; border-left: 4px solid var(--accent); }
+        .case-item h4 { margin-bottom: 0.5rem; color: var(--accent); }
+
+        .security-tech { background: #1a1a1a; padding: 2rem; border-radius: 12px; font-size: 0.95rem; border: 1px solid #333; margin-top: 2rem; }
+        .tech-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+
+        .hpi-section { background: linear-gradient(145deg, #2a2a2a, #1a1a1a); padding: 2.5rem; border-radius: 16px; border: 1px solid #3498db44; margin-top: 4rem; }
+        .share-buttons { display: flex; gap: 10px; justify-content: center; margin-top: 2rem; }
+        .share-btn { padding: 10px 20px; border-radius: 6px; color: white; text-decoration: none; font-size: 0.9rem; font-weight: 600; }
+        .btn-tg { background: #0088cc; }
+        .btn-copy { background: #444; cursor: pointer; border: none; }
+
+        .qr-promo { background: #3498db11; border: 1px dashed var(--accent); padding: 1.5rem; border-radius: 12px; margin-top: 3rem; text-align: center; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 
     <!-- Yandex.Metrika counter -->
@@ -39,57 +61,77 @@
 <body>
     <div class="lang-switcher"><a href="ru-breach-check.html" class="active">RU</a> | <a href="breach-check.html">EN</a></div>
     
-    <header class="hero" style="padding: 2.5rem 1rem;">
-        <a href="ru.html"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" style="width: 60px;"></a>
-        <h1>Центр безопасности данных</h1>
-        <p class="subtitle">Использование мировых стандартов для защиты вашей приватности.</p>
+    <header class="hero-mini">
+        <a href="ru.html"><img src="logo.svg" alt="FOSSpel Logo" style="width: 50px;"></a>
+        <h1>Насколько надежен ваш пароль?</h1>
+        <p class="subtitle">Мгновенная проверка по 10 000 000 000+ взломанных паролей.</p>
     </header>
 
     <main class="container">
-        <!-- БЛОК 1: EMAIL (HPI BRIDGE) -->
-        <section class="checker-section">
-            <h2>1. Проверка Email на утечки</h2>
-            <p class="info-text">
-                Мы используем <strong>Identity Leak Checker</strong> от Института Хассо Платтнера (HPI, Германия). 
-                Это единственный академический сервис, гарантирующий точность данных.
-            </p>
-            <div class="hpi-bridge">
-                <p style="margin-bottom: 1.5rem;"><strong>Протокол безопасности Anti-Reconnaissance:</strong><br>
-                Чтобы результаты вашей проверки не были перехвачены в браузере злоумышленниками, детальный отчет отправляется напрямую на ваш email.</p>
-                <a href="https://sec.hpi.de/ilc/search" target="_blank" class="btn-link">Запросить отчет безопасности HPI</a>
-                <p style="font-size: 0.8rem; margin-top: 1rem; color: #777;">Вы перейдете на официальный сервер sec.hpi.de</p>
+        <!-- ГЛАВНЫЙ ИНСТРУМЕНТ: ПАРОЛИ -->
+        <section class="main-card">
+            <div class="pass-container">
+                <input type="password" id="passInput" class="pass-input" placeholder="Введите пароль для проверки...">
             </div>
-        </section>
-
-        <!-- БЛОК 2: PASSWORD (HIBP) -->
-        <section class="checker-section">
-            <h2>2. Проверка пароля на взлом</h2>
-            <p class="info-text">
-                Введите пароль, чтобы мгновенно проверить его по базе из 10 миллиардов скомпрометированных паролей. 
-                <strong>Мы не видим ваш пароль:</strong> используется технология k-Anonymity (анонимное хеширование).
-            </p>
-            <div style="text-align: center; margin-top: 2rem;">
-                <input type="password" id="passInput" class="pass-input" placeholder="Введите ваш пароль...">
-                <br>
-                <button onclick="checkPassword()" class="button">Проверить безопасность</button>
+            <div style="text-align: center;">
+                <button onclick="checkPassword()" class="button" style="padding: 15px 40px;">Проверить анонимно</button>
                 <div id="passStatus" class="status-box"></div>
             </div>
-        </section>
 
-        <!-- SEO ОПИСАНИЕ -->
-        <section style="margin-top: 4rem; border-top: 1px solid #333; padding-top: 2rem;">
-            <div class="contact-grid">
-                <div class="contact-column">
-                    <h3>Почему нет мгновенного результата по почте?</h3>
-                    <p>Отображение утечек прямо на сайте позволяет хакерам массово проверять списки Email (разведка), чтобы находить уязвимых пользователей. {FOSSpel} блокирует эту возможность, используя академический метод доставки отчета только владельцу почты.</p>
-                </div>
-                <div class="contact-column">
-                    <h3>Как работает проверка пароля?</h3>
-                    <p>Ваш пароль преобразуется в SHA-1 хеш. Мы отправляем серверу только первые 5 символов этого хеша. Этого достаточно для поиска совпадений, но абсолютно недостаточно для того, чтобы кто-то узнал ваш реальный пароль.</p>
-                </div>
+            <div class="security-tech">
+                <span class="tech-icon">🛡️</span>
+                <strong>Это безопасно? Да, на 100%.</strong>
+                <p>Ваш пароль никогда не покидает это устройство. Мы используем технологию <strong>k-Anonymity</strong>: ваш браузер превращает пароль в сложный хеш (SHA-1), и мы отправляем серверу только первые 5 символов этого хеша. Этого достаточно, чтобы найти совпадение, но абсолютно невозможно, чтобы кто-то (включая нас) узнал ваш пароль.</p>
             </div>
         </section>
+
+        <!-- ЮЗКЕЙСЫ -->
+        <h2 style="text-align:center;">Когда стоит сделать проверку?</h2>
+        <div class="use-cases">
+            <div class="case-item">
+                <h4>Старый аккаунт</h4>
+                <p>Вы используете один и тот же пароль уже несколько лет? Скорее всего, он уже в руках злоумышленников.</p>
+            </div>
+            <div class="case-item">
+                <h4>Повторное использование</h4>
+                <p>Если вы ставите один пароль и на почту, и на доставку пиццы — взлом пиццерии откроет доступ ко всему.</p>
+            </div>
+            <div class="case-item">
+                <h4>Подозрение на взлом</h4>
+                <p>Пришло странное письмо о входе? Проверьте, не стал ли ваш пароль общественным достоянием.</p>
+            </div>
+        </div>
+
+        <!-- КРОСС-ПРОМО: QR -->
+        <div class="qr-promo">
+            <p>Нужен надежный QR-код для бизнеса или личных целей? <br>Используйте наш <strong>полностью бесплатный</strong> генератор.</p>
+            <a href="https://fosspel.github.io/qr-code-generator/" onclick="ym(107077871, 'reachGoal', 'qr_promo_click')" class="button" style="background:#444; margin-top:10px;">Генератор QR-кодов</a>
+        </div>
+
+        <!-- ВТОРОЙ ИНСТРУМЕНТ: HPI -->
+        <section class="hpi-section">
+            <h2 style="color: var(--accent);">3. Экспертная проверка Email</h2>
+            <p>Если проверки пароля недостаточно, воспользуйтесь <strong>Identity Leak Checker</strong> от Института Хассо Платтнера (Германия).</p>
+            <p class="info-text">
+                Это академический стандарт мониторинга даркнета. Для защиты от массового сбора данных хакерами (разведки), HPI отправляет детальный отчет об утечках **только на ваш подтвержденный email**.
+            </p>
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <a href="https://sec.hpi.de/ilc/search" target="_blank" onclick="ym(107077871, 'reachGoal', 'hpi_clicked')" class="button" style="background: var(--accent);">Запросить отчет HPI (Email)</a>
+            </div>
+        </section>
+
+        <!-- ПОДЕЛИТЬСЯ -->
+        <div class="share-buttons">
+            <a href="https://t.me/share/url?url=https://fosspel.github.io/ru-breach-check.html&text=Проверь свой пароль на утечки! Это анонимно и бесплатно." 
+               target="_blank" class="share-btn btn-tg" onclick="ym(107077871, 'reachGoal', 'share_clicked')">Поделиться в Telegram</a>
+            <button class="share-btn btn-copy" onclick="copyLink()">Копировать ссылку</button>
+        </div>
+
     </main>
+
+    <footer>
+        <p>Stay blessed! {FOSSpel} © 2024 | Связь: FOSSpel@proton.me</p>
+    </footer>
 
     <script>
         async function checkPassword() {
@@ -98,7 +140,7 @@
             if (!password) return;
 
             status.style.display = 'block';
-            status.innerHTML = 'Сверяем с базами данных...';
+            status.innerHTML = 'Сравнение с 10 млрд записей...';
             status.className = 'status-box';
 
             try {
@@ -125,15 +167,23 @@
                 }
 
                 if (count > 0) {
+                    ym(107077871, 'reachGoal', 'pass_leaked');
                     status.className = 'status-box danger';
-                    status.innerHTML = `⚠️ Пароль ВЗЛОМАН! Он найден в утечках ${parseInt(count).toLocaleString()} раз. Рекомендуем сменить его.`;
+                    status.innerHTML = `⚠️ Внимание! Этот пароль найден в базах утечек <strong>${parseInt(count).toLocaleString()}</strong> раз. Он скомпрометирован. Срочно замените его везде!`;
                 } else {
+                    ym(107077871, 'reachGoal', 'pass_safe');
                     status.className = 'status-box success';
-                    status.innerHTML = `✅ Этот пароль безопасен. Совпадений в базах не найдено.`;
+                    status.innerHTML = `✅ Чисто! Совпадений в базах утечек не найдено. Этот пароль можно считать безопасным (если он сложный).`;
                 }
             } catch (e) {
-                status.innerHTML = 'Ошибка сети. Пожалуйста, попробуйте позже.';
+                status.innerHTML = 'Ошибка сети. Попробуйте отключить VPN или повторить позже.';
             }
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href);
+            ym(107077871, 'reachGoal', 'share_clicked');
+            alert('Ссылка скопирована!');
         }
     </script>
 </body>
