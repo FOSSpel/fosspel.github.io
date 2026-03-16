@@ -3,123 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Проверка утечек почты | {FOSSpel}</title>
-    <meta name="description" content="Проверьте, была ли ваша электронная почта скомпрометирована в результате утечек данных. Безопасно, анонимно и бесплатно.">
+    <title>Проверка утечек почты и паролей | {FOSSpel}</title>
+    <meta name="description" content="Безопасная проверка вашего email и пароля на утечки в базах данных даркнета. Используем академические стандарты HPI и анонимный протокол HIBP.">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css?v=1.2">
+    
     <style>
-        .search-box { background: #2a2a2a; padding: 2rem; border-radius: 12px; margin: 2rem 0; text-align: center; }
-        .search-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 6px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1rem; margin-bottom: 1rem; outline: none; }
-        .search-input:focus { border-color: #3498db; }
-        .check-btn { background: #3498db; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .check-btn:hover { background: #2980b9; }
-        .check-btn:disabled { background: #555; cursor: not-allowed; }
-        
-        #results { margin-top: 2rem; display: none; }
-        .status-card { padding: 1.5rem; border-radius: 8px; margin-bottom: 1rem; }
-        .status-danger { background: #c0392b22; border: 1px solid #c0392b; color: #e74c3c; }
-        .status-success { background: #27ae6022; border: 1px solid #27ae60; color: #2ecc71; }
-        
-        .source-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; justify-content: center; }
-        .source-tag { background: #444; padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; color: #eee; }
-        
-        .funnel-box { background: #3498db11; border: 1px dashed #3498db; padding: 1.5rem; border-radius: 12px; margin-top: 2rem; }
-        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #3498db; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .checker-section { background: #2a2a2a; padding: 2rem; border-radius: 12px; margin: 2rem 0; border: 1px solid #333; }
+        .iframe-container { width: 100%; height: 600px; border: 1px solid #444; border-radius: 8px; overflow: hidden; background: #fff; margin-top: 1rem; }
+        .pass-input { width: 100%; max-width: 400px; padding: 12px; border-radius: 6px; border: 1px solid #444; background: #1a1a1a; color: white; font-size: 1rem; margin-bottom: 1rem; }
+        .status-box { padding: 1rem; border-radius: 6px; margin-top: 1rem; display: none; font-weight: 600; }
+        .danger { background: #c0392b; color: white; }
+        .success { background: #27ae60; color: white; }
+        .info-text { font-size: 0.9rem; color: #aaa; line-height: 1.6; margin-top: 1rem; }
+        h2 { border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 5px; margin-bottom: 1.5rem; }
     </style>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=107077871', 'ym');
+        ym(107077871, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
 </head>
 <body>
     <div class="lang-switcher"><a href="ru-breach-check.html" class="active">RU</a> | <a href="breach-check.html">EN</a></div>
     
-    <header class="hero" style="padding: 3rem 1rem;">
-        <a href="ru.html" style="text-decoration: none;"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" style="width: 80px;"></a>
-        <h1>Проверка утечек почты</h1>
-        <p class="subtitle">Ваши данные в безопасности? Проверьте свой email по глобальной базе взломов.</p>
+    <header class="hero" style="padding: 2rem 1rem;">
+        <a href="ru.html"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" style="width: 60px;"></a>
+        <h1>Центр безопасности данных</h1>
+        <p class="subtitle">Инструменты академического уровня для защиты вашей цифровой личности.</p>
     </header>
 
     <main class="container">
-        <section class="search-box">
-            <input type="email" id="emailInput" class="search-input" placeholder="Введите ваш адрес почты..." required>
-            <br>
-            <button id="checkBtn" class="check-btn">Проверить безопасность</button>
-        </section>
-
-        <section id="results">
-            <div id="statusMessage" class="status-card"></div>
+        <!-- БЛОК 1: ПРОВЕРКА EMAIL (HPI IFRAME) -->
+        <section class="checker-section">
+            <h2>1. Проверка Email на утечки</h2>
+            <p class="info-text">
+                Мы используем технологии <strong>Hasso Plattner Institute (Германия)</strong>. 
+                В целях безопасности результаты проверки не выводятся на экран, а отправляются лично вам на почту. 
+                Это защищает вас от "разведки" хакерами, которые могли бы использовать наш сайт для поиска уязвимых целей.
+            </p>
             
-            <div class="funnel-box">
-                <h3>Что делать дальше?</h3>
-                <p id="funnelText"></p>
-                <a href="https://t.me/PortfolioAggregator_bot" target="_blank" class="button">Перейти в Telegram-бот</a>
+            <div class="iframe-container">
+                <iframe src="https://sec.hpi.de/ilc/search" width="100%" height="100%" frameborder="0"></iframe>
             </div>
+            <p class="info-text" style="text-align: center;">
+                Если окно выше не загрузилось, используйте <a href="https://sec.hpi.de/ilc/search" target="_blank" style="color:#3498db;">прямую ссылку на портал HPI</a>.
+            </p>
         </section>
 
-        <section id="faq" style="margin-top: 4rem; opacity: 0.8; font-size: 0.9rem;">
-            <h2>Частые вопросы</h2>
-            <p><strong>Это анонимно?</strong> Да, мы не храним ваш email. Проверка выполняется через зашифрованное соединение с нашим защищенным узлом на Cloudflare.</p>
-            <p><strong>Что делать, если нашли утечку?</strong> Немедленно смените пароли на скомпрометированных сервисах и включите двухфакторную аутентификацию (2FA).</p>
+        <!-- БЛОК 2: ПРОВЕРКА ПАРОЛЯ (HIBP API) -->
+        <section class="checker-section">
+            <h2>2. Проверка пароля на взлом</h2>
+            <p class="info-text">
+                Введите пароль, чтобы узнать, фигурировал ли он в известных утечках. Мы не отправляем ваш пароль! 
+                Используется протокол K-Anonymity: на сервер уходит только часть хеша.
+            </p>
+            <input type="password" id="passInput" class="pass-input" placeholder="Введите пароль для проверки...">
+            <br>
+            <button onclick="checkPassword()" class="button">Проверить пароль</button>
+            <div id="passStatus" class="status-box"></div>
+        </section>
+
+        <!-- SEO / ОПИСАНИЕ -->
+        <section style="margin-top: 4rem;">
+            <h2>Почему это важно?</h2>
+            <div class="contact-grid">
+                <div class="contact-column">
+                    <h3>Академический стандарт</h3>
+                    <p>Hasso Plattner Institute (HPI) — мировой лидер в области кибербезопасности. Их база Identity Leak Checker содержит информацию о более чем 14 миллиардах украденных аккаунтов.</p>
+                </div>
+                <div class="contact-column">
+                    <h3>Принцип анонимности</h3>
+                    <p>Проект {FOSSpel} не хранит ваши данные. Проверка пароля реализована через API HaveIBeenPwned с использованием SHA-1 хеширования, что делает невозможным перехват вашего пароля.</p>
+                </div>
+            </div>
         </section>
     </main>
 
-    <footer>
-        <p>Храни вас Господь! {FOSSpel} © 2024</p>
-    </footer>
-
     <script>
-        // ВАЖНО: Добавил https:// в начало адреса воркера
-        const WORKER_URL = "https://fosspel-api.okuptcov4.workers.dev";
-        const BOT_LINK = "https://t.me/PortfolioAggregator_bot"; 
+        async function checkPassword() {
+            const password = document.getElementById('passInput').value;
+            const status = document.getElementById('passStatus');
+            if (!password) return;
 
-        const btn = document.getElementById('checkBtn');
-        const input = document.getElementById('emailInput');
-        const results = document.getElementById('results');
-        const statusMsg = document.getElementById('statusMessage');
-        const funnelText = document.getElementById('funnelText');
-
-        btn.addEventListener('click', async () => {
-            const email = input.value.trim();
-            if (!email || !email.includes('@')) {
-                alert('Пожалуйста, введите корректный email');
-                return;
-            }
-
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loader"></span> Проверяем...';
-            results.style.display = 'none';
+            status.style.display = 'block';
+            status.className = 'status-box';
+            status.innerHTML = 'Проверяем...';
 
             try {
-                const response = await fetch(WORKER_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: email, source: 'web' })
-                });
+                // Хешируем пароль в SHA-1
+                const msgBuffer = new TextEncoder().encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-1', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
+                
+                const prefix = hashHex.substring(0, 5);
+                const suffix = hashHex.substring(5);
 
-                if (!response.ok) throw new Error('Ошибка сервера');
-                const data = await response.json();
+                const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
+                const data = await response.text();
+                
+                const lines = data.split('\n');
+                let found = false;
+                let count = 0;
 
-                results.style.display = 'block';
-                if (data.found > 0) {
-                    statusMsg.className = 'status-card status-danger';
-                    statusMsg.innerHTML = `<h3>Внимание!</h3> Обнаружено в утечках: <strong>${data.found}</strong> раз.<br>
-                    <p style="font-size: 0.9rem; margin-top:10px;">Данные утекли через следующие сервисы:</p>
-                    <div class="source-list">${data.sources.map(s => `<span class="source-tag">${s}</span>`).join('')}</div>`;
-                    funnelText.innerText = "Чтобы увидеть детали этих взломов и получать мгновенные уведомления о новых утечках, воспользуйтесь нашим бесплатным Telegram-ботом.";
-                } else {
-                    statusMsg.className = 'status-card status-success';
-                    statusMsg.innerHTML = `<h3>Хорошие новости!</h3> Утечек для этой почты не обнаружено в нашей базе.`;
-                    funnelText.innerText = "Оставайтесь в безопасности! Подпишитесь на круглосуточный мониторинг в Telegram, чтобы первым узнать, если ваши данные попадут в сеть.";
+                for (let line of lines) {
+                    const [lineSuffix, lineCount] = line.split(':');
+                    if (lineSuffix === suffix) {
+                        found = true;
+                        count = lineCount;
+                        break;
+                    }
                 }
 
-            } catch (error) {
-                alert('Ошибка соединения с сервером. Пожалуйста, попробуйте позже.');
-                console.error(error);
-            } finally {
-                btn.disabled = false;
-                btn.innerText = 'Проверить безопасность';
+                if (found) {
+                    status.className = 'status-box danger';
+                    status.innerHTML = `⚠️ Пароль НЕБЕЗОПАСЕН! Он найден в базах ${parseInt(count).toLocaleString()} раз. Смените его!`;
+                } else {
+                    status.className = 'status-box success';
+                    status.innerHTML = `✅ Этот пароль не найден в известных утечках.`;
+                }
+            } catch (e) {
+                status.innerHTML = 'Ошибка проверки. Попробуйте позже.';
             }
-        });
+        }
     </script>
 </body>
 </html>
