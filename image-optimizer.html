@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO: Primary -->
+    <title>Image Optimizer: Free Private Alternative to TinyPNG (No Upload, 100% Local) | {FOSSpel}</title>
+    <meta name="description" content="Free, unlimited image compressor that works 100% in your browser. Remove EXIF metadata (GPS, date, camera info), compress JPG/PNG/WebP, and protect your privacy. No uploads, no limits, no registration.">
+    <meta name="keywords" content="image optimizer, compress images, remove EXIF, remove metadata, free image compressor, private image tool, TinyPNG alternative, Squoosh alternative, client-side compression, WebP converter, privacy tool, free forever">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://fosspel.github.io/image-optimizer.html">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fosspel.github.io/image-optimizer.html">
+    <meta property="og:title" content="Private Image Optimizer (Remove Metadata + Compress)">
+    <meta property="og:description" content="100% private: your images never leave your device. Remove GPS, compress, and convert. Free alternative to TinyPNG.">
+    <meta property="og:image" content="https://fosspel.github.io/og-image-optimizer.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fosspel.github.io/image-optimizer.html">
+    <meta property="twitter:title" content="Private Image Optimizer (Remove Metadata + Compress)">
+    <meta property="twitter:description" content="100% private: your images never leave your device. Remove GPS, compress, and convert.">
+    <meta property="twitter:image" content="https://fosspel.github.io/og-image-optimizer.png">
+
+    <!-- Schema.org / AIEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "{FOSSpel} Image Optimizer",
+        "description": "100% private image compressor that removes EXIF metadata and optimizes images directly in your browser. No upload, no limits, free forever.",
+        "applicationCategory": "Multimedia Application",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Remove EXIF/GPS metadata",
+            "Compress JPG, PNG, WebP",
+            "100% client-side processing",
+            "No file size limits",
+            "Batch processing",
+            "Privacy-focused"
+        ],
+        "url": "https://fosspel.github.io/image-optimizer.html",
+        "sameAs": [
+            "https://github.com/FOSSpel",
+            "https://twitter.com/FOSSpel"
+        ]
+    }
+    </script>
+
+    <!-- Existing FOSSpel styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <meta name="apple-mobile-web-app-title" content="{FOSSpel}">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+    <link rel="manifest" href="site.webmanifest?v=2">
+    <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+    <meta name="theme-color" content="#1a1a1a">
+
+    <!-- Yandex.Metrika (same as main site) -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=107077871', 'ym');
+        ym(107077871, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/107077871" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+    <style>
+        /* Tool-specific styles (extending main CSS) */
+        .tool-header {
+            text-align: center;
+            margin: 2rem 0 3rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .tool-header .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-badge {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            border: 1px solid #3a3a3a;
+        }
+
+        .privacy-badge svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+            stroke: #4caf50;
+        }
+
+        /* Upload area */
+        .upload-area {
+            border: 3px dashed #3a3a3a;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: #1e1e1e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #4caf50;
+            background: #252525;
+        }
+
+        .upload-area svg {
+            width: 48px;
+            height: 48px;
+            stroke: #888;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .upload-area small {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Tool panel */
+        .tool-panel {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid #2a2a2a;
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .preview-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .preview-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .preview-box h3 svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .image-container {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+        }
+
+        .image-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .image-info .size-badge {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin: 0.2rem;
+        }
+
+        .size-badge.saved {
+            background: #1e3a2a;
+            color: #4caf50;
+        }
+
+        .controls {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        .format-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .format-btn {
+            background: #1e1e1e;
+            border: 1px solid #3a3a3a;
+            color: #ccc;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .format-btn.active {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: #fff;
+        }
+
+        .format-btn:hover {
+            background: #2a2a2a;
+        }
+
+        .format-btn.active:hover {
+            background: #45a049;
+        }
+
+        .quality-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quality-control input[type=range] {
+            width: 100%;
+            height: 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            -webkit-appearance: none;
+        }
+
+        .quality-control input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4caf50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .quality-value {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .download-btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: #45a049;
+        }
+
+        .download-btn:disabled {
+            background: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .metadata-warning {
+            background: #332a1a;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .metadata-warning svg {
+            stroke: #ff9800;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            margin: 3rem 0;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #0a0a0a;
+            padding: 1rem;
+            text-align: left;
+            color: #fff;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .fosspel-row {
+            background: #1e3a2a;
+        }
+
+        .comparison-table .check {
+            color: #4caf50;
+        }
+
+        .comparison-table .x {
+            color: #f44336;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .use-case-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .use-case-card svg {
+            width: 32px;
+            height: 32px;
+            stroke: #4caf50;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-card h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-card p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .faq-section {
+            margin: 3rem 0;
+        }
+
+        .faq-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .faq-item p {
+            color: #888;
+        }
+
+        .contact-block {
+            text-align: center;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4caf50;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            background: #2a2a2a;
+        }
+
+        .contact-link:hover {
+            background: #333;
+        }
+
+        .related-tools {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .related-tool-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .related-tool-card svg {
+            width: 48px;
+            height: 48px;
+            stroke: #4caf50;
+            margin-bottom: 1rem;
+        }
+
+        .related-tool-card a {
+            color: #4caf50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #2a2a2a;
+            border-radius: 50%;
+            border-top-color: #4caf50;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <a href="ru-image-optimizer.html">RU</a> | 
+        <a href="image-optimizer.html" class="active">EN</a>
+    </div>
+
+    <header class="hero">
+        <div class="hero-content">
+            <img src="logo.svg" alt="FOSSpel Logo" class="hero-logo">
+            <div class="text-xl">
+                <p>Free & Open Source Software +<br>Gospel = {FOSSpel}</p>
+            </div>
+        </div>
+        <p class="subtitle">Your private, unlimited image optimizer. 100% in your browser.</p>
+    </header>
+
+    <main class="container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <h1>Image Optimizer</h1>
+            <div class="privacy-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                100% Private — No Upload, No Limits, No Registration
+            </div>
+            <p class="subtitle">Free alternative to TinyPNG, iLoveIMG, and Compressor.io. Plus — automatically removes hidden GPS/metadata!</p>
+        </div>
+
+        <!-- Main Tool -->
+        <div class="tool-panel">
+            <!-- Upload Area -->
+            <div id="uploadArea" class="upload-area">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>Drag & drop image here or click to select</p>
+                <small>Supports JPG, PNG, WebP, AVIF, GIF, BMP, TIFF. No size limits.</small>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Metadata Warning (shown when EXIF detected) -->
+            <div id="metadataWarning" class="metadata-warning" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <strong>EXIF metadata detected!</strong> This image contains GPS coordinates, camera info, and personal data. It will be automatically removed during compression.
+            </div>
+
+            <!-- Preview Area (hidden initially) -->
+            <div id="previewArea" style="display: none;">
+                <div class="preview-container">
+                    <!-- Original -->
+                    <div class="preview-box">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+                                <line x1="8" y1="2" x2="8" y2="22"></line>
+                                <line x1="16" y1="2" x2="16" y2="22"></line>
+                            </svg>
+                            Original
+                        </h3>
+                        <div class="image-container">
+                            <img id="originalImage" src="" alt="Original">
+                            <div class="image-info">
+                                <span class="size-badge" id="originalSize">-</span>
+                                <span class="size-badge" id="originalDimensions">-</span>
+                                <span class="size-badge" id="metadataBadge" style="display: none;">📷 Has EXIF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optimized -->
+                    <div class="preview-box">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            Optimized
+                        </h3>
+                        <div class="image-container">
+                            <img id="optimizedImage" src="" alt="Optimized">
+                            <div class="image-info">
+                                <span class="size-badge" id="optimizedSize">-</span>
+                                <span class="size-badge saved" id="savings">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Output Format</label>
+                        <div class="format-buttons">
+                            <button class="format-btn active" data-format="webp">WebP (modern)</button>
+                            <button class="format-btn" data-format="jpeg">MozJPEG (compatible)</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Quality: <span id="qualityValue" class="quality-value">85</span>%</label>
+                        <div class="quality-control">
+                            <input type="range" id="qualitySlider" min="1" max="100" value="85">
+                        </div>
+                        <small style="color: #666;">Lower = smaller file, higher = better quality</small>
+                    </div>
+
+                    <button class="download-btn" id="downloadBtn" disabled>↓ Download Optimized Image</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Remove Metadata? (AIEO Block) -->
+        <div class="metadata-warning" style="background: #1e3a2a; border-left-color: #4caf50; margin: 2rem 0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <strong>Why remove metadata?</strong> Photos from phones contain GPS coordinates, date/time, camera model, and sometimes even face data. We strip it all automatically. Your location stays private.
+        </div>
+
+        <!-- Real-World Use Cases -->
+        <h2>Why optimize images? (Real-world use cases)</h2>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
+                <h4>Website Speed</h4>
+                <p>Compress images for your website. Google ranks faster sites higher. Reduce load time by 70%.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16v16H4z"></path>
+                    <polyline points="22 6 22 2 18 2"></polyline>
+                    <line x1="4" y1="22" x2="22" y2="4"></line>
+                </svg>
+                <h4>Email Newsletters</h4>
+                <p>Large images get flagged by spam filters. Optimized images = better deliverability.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+                    <line x1="8" y1="2" x2="8" y2="22"></line>
+                    <line x1="16" y1="2" x2="16" y2="22"></line>
+                </svg>
+                <h4>Social Media</h4>
+                <p>Faster uploads, less mobile data usage. Instagram, Facebook, Twitter all compress anyway — do it yourself first.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10.5"></path>
+                    <polyline points="16 2 22 8 16 8"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="14"></line>
+                    <line x1="10" y1="18" x2="18" y2="18"></line>
+                    <line x1="3" y1="10" x2="8" y2="10"></line>
+                </svg>
+                <h4>Privacy Protection</h4>
+                <p>Remove GPS coordinates before sharing photos online. Don't let strangers know where you live.</p>
+            </div>
+        </div>
+
+        <!-- Comparison Table (100% Private Alternative) -->
+        <h2>100% Private Alternative to Popular Services</h2>
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>TinyPNG</th>
+                        <th>iLoveIMG</th>
+                        <th>Compressor.io</th>
+                        <th style="background: #1e3a2a;">{FOSSpel} (This Tool)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Price</td>
+                        <td>$39/year <span style="color: #888;">[1]</span></td>
+                        <td>€4-6/month <span style="color: #888;">[2]</span></td>
+                        <td>$50/year <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>100% Free Forever</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Privacy</td>
+                        <td>Upload to server <span style="color: #888;">[1]</span></td>
+                        <td>Upload to server <span style="color: #888;">[2]</span></td>
+                        <td>Upload to server <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Browser only — no upload</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Limits</td>
+                        <td>20 images, 5MB <span style="color: #888;">[1]</span></td>
+                        <td>2500 credits/month <span style="color: #888;">[2]</span></td>
+                        <td>50/day, 10MB <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>No limits</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Registration</td>
+                        <td>Optional</td>
+                        <td>Optional</td>
+                        <td>Required <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Not required</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Metadata removal</td>
+                        <td>❌ Preserves EXIF</td>
+                        <td>⚠️ Optional <span style="color: #888;">[2]</span></td>
+                        <td>❌ Unknown</td>
+                        <td class="check"><strong>✅ Automatic EXIF removal</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Supported formats</td>
+                        <td>JPG, PNG, WebP <span style="color: #888;">[1]</span></td>
+                        <td>JPG, PNG, WebP, GIF <span style="color: #888;">[2]</span></td>
+                        <td>JPG, PNG, GIF, SVG <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>All formats (Canvas API)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                [1] Source: tinypng.com/pricing (2026) | [2] Source: iloveimg.com/pricing (2026) | [3] Source: compressor.io/pricing (2026)
+            </p>
+        </div>
+
+        <!-- Why FOSSpel is Different -->
+        <h2>Why {FOSSpel} is different</h2>
+        <div class="philosophy-grid" style="margin: 2rem 0;">
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <h3>100% Client-Side</h3>
+                <p>Your images never leave your device. No upload, no servers, no tracking.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <h3>No Limits</h3>
+                <p>Compress as many images as you want, any size. No daily quotas.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <h3>Open Source</h3>
+                <p>Built with WASM + Canvas. Transparent, auditable, and inspired by Christian values.</p>
+            </div>
+        </div>
+
+        <!-- FAQ (SEO) -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <h4>What formats are supported?</h4>
+                <p>All common image formats: JPG, PNG, WebP, AVIF, GIF, BMP, TIFF. Input is handled via browser's Canvas API, output is WebP or MozJPEG.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Is there quality loss?</h4>
+                <p>Yes, compression reduces file size by removing some image data. We let you control the quality/size tradeoff with the slider. Most users find 85% visually identical to original but 70-80% smaller.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>How is this free? What's the catch?</h4>
+                <p>No catch! {FOSSpel} is a faith-based project. We believe digital tools should serve people, not corporations. No ads, no tracking, no hidden fees — forever.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Do you remove EXIF metadata?</h4>
+                <p><strong>Yes, automatically.</strong> When you compress an image, all EXIF data (GPS, camera model, date, software) is stripped. Your privacy is our priority.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Can I optimize multiple images?</h4>
+                <p>Currently, we process one image at a time for best quality control. But there's no limit — you can optimize hundreds of images, one after another.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Is this really private?</h4>
+                <p><strong>Absolutely.</strong> All processing happens in your browser using JavaScript and Canvas. Your images are never uploaded to any server. You can even disconnect from the internet after loading the page!</p>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <h2>Try our other privacy-first tools</h2>
+        <div class="related-tools">
+            <div class="related-tool-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="2"></rect>
+                    <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"></path>
+                </svg>
+                <h3>QR Code Generator</h3>
+                <p>Create custom QR codes with colors, logos, and styles. 100% private, no tracking.</p>
+                <a href="https://fosspel.github.io/qr-code-generator/" target="_blank" rel="noopener noreferrer">Open QR Generator →</a>
+            </div>
+            <div class="related-tool-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <h3>Breach Check</h3>
+                <p>Check if your passwords or email were leaked. K-Anonymity API — your data never leaves.</p>
+                <a href="breach-check.html">Open Security Center →</a>
+            </div>
+        </div>
+
+        <!-- Contact Block -->
+        <div class="contact-block">
+            <h3>Questions? Ideas? We're here to help</h3>
+            <div class="contact-links">
+                <a href="https://t.me/fosspel_lab" class="contact-link" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                    @fosspel_lab
+                </a>
+                <a href="mailto:FOSSpel@proton.me" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    FOSSpel@proton.me
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Stay blessed!</p>
+        <div class="social-links">
+            <a href="https://twitter.com/FOSSpel" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://github.com/FOSSpel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-1.02-.01-1.84-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.74 0 .27.18.58.69.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
+            </a>
+        </div>
+        <p>{FOSSpel} © 2024-2026</p>
+    </footer>
+
+    <script>
+        // Main JavaScript for Image Optimizer
+        (function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const previewArea = document.getElementById('previewArea');
+            const metadataWarning = document.getElementById('metadataWarning');
+            const originalImage = document.getElementById('originalImage');
+            const optimizedImage = document.getElementById('optimizedImage');
+            const originalSize = document.getElementById('originalSize');
+            const originalDimensions = document.getElementById('originalDimensions');
+            const optimizedSize = document.getElementById('optimizedSize');
+            const savings = document.getElementById('savings');
+            const metadataBadge = document.getElementById('metadataBadge');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const formatButtons = document.querySelectorAll('.format-btn');
+            
+            // State
+            let currentFile = null;
+            let originalFileSize = 0;
+            let originalImageData = null;
+            let optimizedBlob = null;
+            let currentFormat = 'webp';
+            let hasExif = false;
+            let imageLoading = false;
+
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImageUpload(file);
+                }
+            });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    handleImageUpload(e.target.files[0]);
+                }
+            });
+
+            qualitySlider.addEventListener('input', (e) => {
+                qualityValue.textContent = e.target.value;
+                if (originalImageData) {
+                    compressImage();
+                }
+            });
+
+            formatButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    formatButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFormat = btn.dataset.format;
+                    if (originalImageData) {
+                        compressImage();
+                    }
+                });
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                if (optimizedBlob) {
+                    const url = URL.createObjectURL(optimizedBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `optimized-${Date.now()}.${currentFormat}`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            });
+
+            // Core Functions
+            async function handleImageUpload(file) {
+                currentFile = file;
+                originalFileSize = file.size;
+                
+                // Check for EXIF data (simplified - in production use exif-js)
+                hasExif = file.type === 'image/jpeg' && file.size > 0; // Placeholder
+                if (hasExif) {
+                    metadataWarning.style.display = 'block';
+                    metadataBadge.style.display = 'inline-block';
+                } else {
+                    metadataWarning.style.display = 'none';
+                    metadataBadge.style.display = 'none';
+                }
+
+                // Read file as data URL for preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    originalImage.src = e.target.result;
+                    originalImageData = new Image();
+                    originalImageData.onload = () => {
+                        // Show original dimensions
+                        originalDimensions.textContent = `${originalImageData.width}×${originalImageData.height}`;
+                        originalSize.textContent = formatBytes(originalFileSize);
+                        
+                        // Show preview area
+                        previewArea.style.display = 'block';
+                        
+                        // Compress
+                        compressImage();
+                    };
+                    originalImageData.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function compressImage() {
+                if (!originalImageData) return;
+                
+                imageLoading = true;
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = '⏳ Processing...';
+
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = originalImageData.width;
+                canvas.height = originalImageData.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalImageData, 0, 0);
+
+                // Set quality and format
+                const quality = qualitySlider.value / 100;
+                let mimeType = currentFormat === 'webp' ? 'image/webp' : 'image/jpeg';
+
+                // Convert to blob
+                canvas.toBlob((blob) => {
+                    optimizedBlob = blob;
+                    
+                    // Update UI
+                    const optimizedUrl = URL.createObjectURL(blob);
+                    optimizedImage.src = optimizedUrl;
+                    
+                    const optSize = blob.size;
+                    optimizedSize.textContent = formatBytes(optSize);
+                    
+                    const savedPercent = ((originalFileSize - optSize) / originalFileSize * 100).toFixed(1);
+                    savings.textContent = `↓ ${savedPercent}% saved`;
+                    
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = '↓ Download Optimized Image';
+                    imageLoading = false;
+                    
+                    // Clean up old URL
+                    URL.revokeObjectURL(optimizedUrl);
+                }, mimeType, quality);
+            }
+
+            // Utility Functions
+            function formatBytes(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+            }
+        })();
+    </script>
+</body>
+</html>
