@@ -1,144 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Intelligence Scanner | {FOSSpel}</title>
+    <title>OSINT Scanner | {FOSSpel}</title>
     <link rel="stylesheet" href="css/style.css?v=1.2">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <style>
-        :root { --accent: #ff9d00; --bg-card: #1e1e1e; }
-        .tool-container { max-width: 900px; margin: 40px auto; padding: 20px; }
-        .input-box { 
-            display: flex; gap: 10px; background: var(--bg-card); padding: 15px; 
-            border-radius: 12px; border: 1px solid #333; margin-bottom: 30px;
-        }
-        .input-box input { 
-            flex: 1; background: transparent; border: 1px solid #444; 
-            color: #fff; padding: 12px; border-radius: 6px; outline: none;
-        }
-        .results-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { 
-            background: var(--bg-card); border-radius: 12px; padding: 20px; 
-            border: 1px solid #333; transition: 0.3s;
-        }
-        .card h3 { color: #50fa7b; margin-top: 0; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px; }
-        .data-item { margin: 10px 0; font-size: 0.95rem; line-height: 1.4; }
-        .label { color: #888; font-size: 0.8rem; display: block; }
-        .value { color: #eee; font-family: 'Courier New', monospace; }
-        pre { background: #121212; padding: 10px; border-radius: 6px; color: #bd93f9; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; }
-        .loader { width: 20px; height: 20px; border: 2px solid #50fa7b; border-bottom-color: transparent; border-radius: 50%; display: none; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .badge-red { background: #ff5555; color: #fff; }
-        .badge-green { background: #50fa7b; color: #282a36; }
+        .osint-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 800px; margin: 20px auto; }
+        .osint-card { background: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 12px; }
+        .osint-card h3 { color: #ff9d00; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .data-row { display: flex; justify-content: space-between; margin: 10px 0; font-family: monospace; }
+        .data-label { color: #888; }
+        .data-value { color: #fff; text-align: right; }
+        .input-group { display: flex; gap: 10px; max-width: 800px; margin: 0 auto 30px; }
+        input { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; }
+        .status-ok { color: #00ff00; }
+        .status-bad { color: #ff4444; }
+        .loader { display: none; text-align: center; color: #ff9d00; margin-bottom: 20px; }
     </style>
 </head>
 <body>
-    <div class="lang-switcher"><a href="ru-osint.html">RU</a> | <a href="osint-check.html" class="active">EN</a></div>
-    
-    <div class="tool-container">
-        <header style="text-align: center; margin-bottom: 40px;">
-             <a href="index.html"><img src="logo.svg" height="60"></a>
-             <h1>OSINT Intel Scanner</h1>
-             <p style="color: #888;">Verify domains, IPs and emails anonymously</p>
-        </header>
+    <header class="hero">
+        <h1>OSINT Scanner</h1>
+        <p>Email, IP & Domain Intelligence</p>
+    </header>
 
-        <div class="input-box">
-            <input type="text" id="targetInput" placeholder="Enter domain (google.com), IP or email...">
-            <button onclick="runScan()" class="button" id="btnText">Scan</button>
-            <div class="loader" id="loader"></div>
+    <main class="container">
+        <div class="input-group">
+            <input type="text" id="target" placeholder="Введите email, домен или IP (например rbc.ru)">
+            <button onclick="scan()" class="button">СКАНИРОВАТЬ</button>
         </div>
 
-        <div class="results-grid" id="results" style="display: none;">
-            <!-- Email Info -->
-            <div class="card" id="emailCard" style="display:none;">
-                <h3>Email Security</h3>
-                <div id="emailData"></div>
+        <div id="loading" class="loader">Анализируем... это может занять до 5 секунд</div>
+
+        <div class="osint-grid" id="results" style="display: none;">
+            <!-- Результаты IP/Domain -->
+            <div class="osint-card">
+                <h3>Инфраструктура и Гео</h3>
+                <div id="geo-results"></div>
             </div>
 
-            <!-- Infrastructure -->
-            <div class="card">
-                <h3>Infrastructure & Geo</h3>
-                <div id="geoData">
-                    <div class="data-item"><span class="label">Status</span><span class="value">Waiting...</span></div>
-                </div>
+            <!-- Результаты Email -->
+            <div class="osint-card" id="email-card" style="display:none;">
+                <h3>Анализ Email</h3>
+                <div id="email-results"></div>
             </div>
-
-            <!-- WHOIS -->
-            <div class="card">
-                <h3>Domain Registry (RDAP)</h3>
-                <div id="whoisData"><pre>No search performed</pre></div>
-                <div id="externalLink" style="margin-top:10px;"></div>
-            </div>
+            
+            <!-- Ссылка на полный WHOIS -->
+            <div id="whois-link" style="text-align: center;"></div>
         </div>
-    </div>
+    </main>
 
     <script>
-        async function runScan() {
-            const input = document.getElementById('targetInput').value.trim();
-            if(!input) return;
+        async function scan() {
+            const val = document.getElementById('target').value.trim();
+            if(!val) return;
 
-            // UI State
-            document.getElementById('loader').style.display = 'block';
-            document.getElementById('btnText').style.display = 'none';
-            document.getElementById('results').style.display = 'grid';
-            
-            const isEmail = input.includes('@');
-            const target = isEmail ? input.split('@')[1] : input;
-
-            document.getElementById('emailCard').style.display = isEmail ? 'block' : 'none';
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            const isEmail = val.includes('@');
+            const domain = isEmail ? val.split('@')[1] : val;
 
             try {
-                // Выполняем запросы
-                const [emailRes, geoRes, whoisRes] = await Promise.allSettled([
-                    isEmail ? fetch(`https://disposable.debounce.io/?email=${input}`).then(r => r.json()) : null,
-                    fetch(`https://ipapi.co/${target}/json/`).then(r => r.json()),
-                    fetch(`https://rdap.org/domain/${target}`).then(r => r.json())
-                ]);
+                // 1. Используем стабильный API для Geo (freeipapi.com поддерживает HTTPS и CORS)
+                const geoReq = await fetch(`https://freeipapi.com/api/json/${domain}`);
+                const geo = await geoReq.json();
 
-                // 1. Email Logic
-                if (isEmail && emailRes.status === 'fulfilled' && emailRes.value) {
-                    const disp = emailRes.value.disposable === "true";
-                    document.getElementById('emailData').innerHTML = `
-                        <div class="data-item">
-                            <span class="badge ${disp ? 'badge-red' : 'badge-green'}">${disp ? 'DISPOSABLE' : 'PERMANENT'}</span>
-                            <p style="font-size:0.8rem; color:#888; margin-top:10px;">${disp ? 'This is a temporary/burn mail.' : 'Safe provider.'}</p>
-                        </div>`;
-                }
-
-                // 2. Geo Logic (ipapi.co)
-                if (geoRes.status === 'fulfilled' && !geoRes.value.error) {
-                    const g = geoRes.value;
-                    document.getElementById('geoData').innerHTML = `
-                        <div class="data-item"><span class="label">IP Address</span><span class="value">${g.ip || 'N/A'}</span></div>
-                        <div class="data-item"><span class="label">Location</span><span class="value">📍 ${g.country_name}, ${g.city}</span></div>
-                        <div class="data-item"><span class="label">ISP</span><span class="value">🏢 ${g.org || 'N/A'}</span></div>
-                        <div class="data-item"><span class="label">ASN</span><span class="value">🔢 ${g.asn || 'N/A'}</span></div>
+                // 2. Email check (Debounce - ты подтвердил, что работает)
+                let emailHtml = '';
+                if(isEmail) {
+                    const mailReq = await fetch(`https://disposable.debounce.io/?email=${val}`);
+                    const mailData = await mailReq.json();
+                    const isDisp = mailData.disposable === "true";
+                    emailHtml = `
+                        <div class="data-row"><span class="data-label">Тип почты:</span>
+                        <span class="data-value ${isDisp ? 'status-bad' : 'status-ok'}">${isDisp ? 'ОДНОРАЗОВАЯ' : 'ПОСТОЯННАЯ'}</span></div>
                     `;
+                    document.getElementById('email-card').style.display = 'block';
+                    document.getElementById('email-results').innerHTML = emailHtml;
                 } else {
-                    document.getElementById('geoData').innerHTML = `<p style="color:#ff5555">Infrastructure data unavailable for this target.</p>`;
+                    document.getElementById('email-card').style.display = 'none';
                 }
 
-                // 3. WHOIS/RDAP Logic
-                if (whoisRes.status === 'fulfilled' && whoisRes.value && !whoisRes.value.errorCode) {
-                    const w = whoisRes.value;
-                    const registrar = w.entities ? w.entities[0].vcardArray[1][1][3] : 'Unknown';
-                    document.getElementById('whoisData').innerHTML = `<pre>Registrar: ${registrar}\nStatus: ${w.status ? w.status[0] : 'Active'}\nRDAP Source: rdap.org</pre>`;
-                } else {
-                    document.getElementById('whoisData').innerHTML = `<p style="color:#888">RDAP failed for this TLD.</p>`;
-                }
-                
-                // Всегда даем ссылку на ручную проверку, если это домен
-                if (!isEmail || target) {
-                    document.getElementById('externalLink').innerHTML = `<a href="https://who.is/whois/${target}" target="_blank" class="button" style="font-size:0.7rem; padding: 5px 10px;">Full WHOIS Report ↗</a>`;
-                }
+                // Вывод Гео
+                document.getElementById('geo-results').innerHTML = `
+                    <div class="data-row"><span class="data-label">IP:</span><span class="data-value">${geo.ipAddress || 'Н/D'}</span></div>
+                    <div class="data-row"><span class="data-label">Страна:</span><span class="data-value">${geo.countryName || 'Н/D'}</span></div>
+                    <div class="data-row"><span class="data-label">Город:</span><span class="data-value">${geo.cityName || 'Н/D'}</span></div>
+                    <div class="data-row"><span class="data-label">Провайдер:</span><span class="data-value">${geo.asName || 'Н/D'}</span></div>
+                `;
 
+                // WHOIS - чтобы не зависеть от дырявых API, даем прямую ссылку на проверку
+                // Это 100% надежно для пользователя
+                document.getElementById('whois-link').innerHTML = `
+                    <a href="https://who.is/whois/${domain}" target="_blank" class="button" style="background:#333;">Открыть полный WHOIS отчет для ${domain} ↗</a>
+                `;
+
+                document.getElementById('results').style.display = 'grid';
             } catch (err) {
+                alert('Ошибка при сканировании. Проверьте сеть или формат ввода.');
                 console.error(err);
             } finally {
-                document.getElementById('loader').style.display = 'none';
-                document.getElementById('btnText').style.display = 'block';
+                document.getElementById('loading').style.display = 'none';
             }
         }
     </script>
