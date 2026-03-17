@@ -11,15 +11,11 @@ async function scan() {
     resBlock.style.display = 'none';
 
     try {
-        const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}`);
+        // Добавляем timestamp, чтобы избежать кэширования ошибок
+        const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}&t=${Date.now()}`);
         const data = await res.json();
         
-        // Если API не нашло домен (success: false), выводим ошибку
-        if (!data.success) {
-            throw new Error("Домен не найден или защищен.");
-        }
-
-        // Вывод почты
+        // Почта
         let emailHtml = '';
         if (data.isEmail) {
             const statusClass = data.disposable ? 'status-bad' : 'status-ok';
@@ -28,7 +24,7 @@ async function scan() {
         }
         document.getElementById('emailInfo').innerHTML = emailHtml;
 
-        // Вывод Гео
+        // Гео (если данных нет, будет N/A, но страница не упадет)
         document.getElementById('geoInfo').innerHTML = `
             <div class="data-item"><span class="label">IP Адрес:</span> <span class="value">${data.ip}</span></div>
             <div class="data-item"><span class="label">Страна:</span> <span class="value">${data.country}</span></div>
@@ -36,7 +32,7 @@ async function scan() {
             <div class="data-item"><span class="label">Провайдер:</span> <span class="value">${data.isp}</span></div>
         `;
 
-        // Прямая ссылка на WHOIS для nare37.com
+        // WHOIS
         document.getElementById('whoisLink').href = `https://whois.domaintools.com/${data.domain}`;
         document.getElementById('whoisLink').innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
         
