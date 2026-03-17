@@ -1,109 +1,22 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Scanner | {FOSSpel}</title>
-    <link rel="stylesheet" href="css/style.css?v=1.2">
-    <style>
-        .osint-grid { display: grid; grid-template-columns: 1fr; gap: 20px; max-width: 800px; margin: 20px auto; }
-        .osint-card { background: #1a1a1a; border: 1px solid #333; padding: 20px; border-radius: 12px; }
-        .osint-card h3 { color: #ff9d00; margin-top: 0; border-bottom: 1px solid #333; padding-bottom: 10px; }
-        .data-row { display: flex; justify-content: space-between; margin: 10px 0; font-family: monospace; }
-        .data-label { color: #888; }
-        .data-value { color: #fff; text-align: right; }
-        .input-group { display: flex; gap: 10px; max-width: 800px; margin: 0 auto 30px; }
-        input { flex: 1; padding: 15px; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; }
-        .status-ok { color: #00ff00; }
-        .status-bad { color: #ff4444; }
-        .loader { display: none; text-align: center; color: #ff9d00; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <header class="hero">
-        <h1>OSINT Scanner</h1>
-        <p>Email, IP & Domain Intelligence</p>
-    </header>
+async function scan() {
+    const val = document.getElementById('target').value.trim();
+    if(!val) return;
 
-    <main class="container">
-        <div class="input-group">
-            <input type="text" id="target" placeholder="Введите email, домен или IP (например rbc.ru)">
-            <button onclick="scan()" class="button">СКАНИРОВАТЬ</button>
-        </div>
+    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev/"; 
 
-        <div id="loading" class="loader">Анализируем... это может занять до 5 секунд</div>
+    try {
+        const res = await fetch(`${workerUrl}/?target=${val}`);
+        const data = await res.json();
+        
+        if(data.error) throw new Error(data.error);
 
-        <div class="osint-grid" id="results" style="display: none;">
-            <!-- Результаты IP/Domain -->
-            <div class="osint-card">
-                <h3>Инфраструктура и Гео</h3>
-                <div id="geo-results"></div>
-            </div>
-
-            <!-- Результаты Email -->
-            <div class="osint-card" id="email-card" style="display:none;">
-                <h3>Анализ Email</h3>
-                <div id="email-results"></div>
-            </div>
-            
-            <!-- Ссылка на полный WHOIS -->
-            <div id="whois-link" style="text-align: center;"></div>
-        </div>
-    </main>
-
-    <script>
-        async function scan() {
-            const val = document.getElementById('target').value.trim();
-            if(!val) return;
-
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-            const isEmail = val.includes('@');
-            const domain = isEmail ? val.split('@')[1] : val;
-
-            try {
-                // 1. Используем стабильный API для Geo (freeipapi.com поддерживает HTTPS и CORS)
-                const geoReq = await fetch(`https://freeipapi.com/api/json/${domain}`);
-                const geo = await geoReq.json();
-
-                // 2. Email check (Debounce - ты подтвердил, что работает)
-                let emailHtml = '';
-                if(isEmail) {
-                    const mailReq = await fetch(`https://disposable.debounce.io/?email=${val}`);
-                    const mailData = await mailReq.json();
-                    const isDisp = mailData.disposable === "true";
-                    emailHtml = `
-                        <div class="data-row"><span class="data-label">Тип почты:</span>
-                        <span class="data-value ${isDisp ? 'status-bad' : 'status-ok'}">${isDisp ? 'ОДНОРАЗОВАЯ' : 'ПОСТОЯННАЯ'}</span></div>
-                    `;
-                    document.getElementById('email-card').style.display = 'block';
-                    document.getElementById('email-results').innerHTML = emailHtml;
-                } else {
-                    document.getElementById('email-card').style.display = 'none';
-                }
-
-                // Вывод Гео
-                document.getElementById('geo-results').innerHTML = `
-                    <div class="data-row"><span class="data-label">IP:</span><span class="data-value">${geo.ipAddress || 'Н/D'}</span></div>
-                    <div class="data-row"><span class="data-label">Страна:</span><span class="data-value">${geo.countryName || 'Н/D'}</span></div>
-                    <div class="data-row"><span class="data-label">Город:</span><span class="data-value">${geo.cityName || 'Н/D'}</span></div>
-                    <div class="data-row"><span class="data-label">Провайдер:</span><span class="data-value">${geo.asName || 'Н/D'}</span></div>
-                `;
-
-                // WHOIS - чтобы не зависеть от дырявых API, даем прямую ссылку на проверку
-                // Это 100% надежно для пользователя
-                document.getElementById('whois-link').innerHTML = `
-                    <a href="https://who.is/whois/${domain}" target="_blank" class="button" style="background:#333;">Открыть полный WHOIS отчет для ${domain} ↗</a>
-                `;
-
-                document.getElementById('results').style.display = 'grid';
-            } catch (err) {
-                alert('Ошибка при сканировании. Проверьте сеть или формат ввода.');
-                console.error(err);
-            } finally {
-                document.getElementById('loading').style.display = 'none';
-            }
-        }
-    </script>
-</body>
-</html>
+        // Теперь данные ТОЧНО придут, так как Worker обходит CORS
+        document.getElementById('geo-results').innerHTML = `
+            <div class="data-row"><span>IP:</span><span>${data.geo.ip || data.dns}</span></div>
+            <div class="data-row"><span>Страна:</span><span>${data.geo.country_name || 'N/A'}</span></div>
+            <div class="data-row"><span>ISP:</span><span>${data.geo.org || 'N/A'}</span></div>
+        `;
+    } catch (err) {
+        alert("Ошибка: Проверьте URL воркера или лимиты.");
+    }
+}
