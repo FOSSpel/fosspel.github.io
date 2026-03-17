@@ -2,21 +2,31 @@ async function scan() {
     const val = document.getElementById('target').value.trim();
     if(!val) return;
 
-    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev/"; 
+    // Скрываем кнопку, показываем лоадер (если есть)
+    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev"; 
 
     try {
         const res = await fetch(`${workerUrl}/?target=${val}`);
         const data = await res.json();
         
-        if(data.error) throw new Error(data.error);
+        if (data.error) {
+            alert("Ошибка воркера: " + data.error);
+            return;
+        }
 
-        // Теперь данные ТОЧНО придут, так как Worker обходит CORS
+        // Вывод данных
         document.getElementById('geo-results').innerHTML = `
-            <div class="data-row"><span>IP:</span><span>${data.geo.ip || data.dns}</span></div>
-            <div class="data-row"><span>Страна:</span><span>${data.geo.country_name || 'N/A'}</span></div>
-            <div class="data-row"><span>ISP:</span><span>${data.geo.org || 'N/A'}</span></div>
+            <div style="margin-bottom:10px;"><strong>IP:</strong> ${data.ip}</div>
+            <div style="margin-bottom:10px;"><strong>Страна:</strong> ${data.country}</div>
+            <div style="margin-bottom:10px;"><strong>Город:</strong> ${data.city}</div>
+            <div style="margin-bottom:10px;"><strong>Провайдер:</strong> ${data.org}</div>
         `;
+        
+        // Показываем блок результатов
+        document.getElementById('results').style.display = 'block';
+
     } catch (err) {
-        alert("Ошибка: Проверьте URL воркера или лимиты.");
+        console.error(err);
+        alert("Не удалось связаться с воркером. Проверьте консоль (F12).");
     }
 }
