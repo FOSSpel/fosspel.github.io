@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSINT Intelligence Scanner | {FOSSpel}</title>
+    <meta name="description" content="Free open-source OSINT tool to check disposable emails, domain WHOIS, and IP geolocation privately.">
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        .results-area { margin-top: 2rem; display: none; }
+        .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .res-card { background: #252525; padding: 1.5rem; border-radius: 12px; border: 1px solid #333; }
+        .res-card h3 { margin-top: 0; color: #50fa7b; font-size: 1.1rem; }
+        .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.9rem; }
+        .badge-safe { background: rgba(80, 250, 123, 0.1); color: #50fa7b; }
+        .badge-warning { background: rgba(255, 184, 108, 0.1); color: #ffb86c; }
+        pre { background: #1a1a1a; padding: 10px; border-radius: 8px; font-size: 0.85rem; overflow-x: auto; white-space: pre-wrap; color: #bd93f9; }
+        .loader { border: 3px solid #333; border-top: 3px solid #50fa7b; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 10px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher"><a href="ru-osint-check.html">RU</a> | <a href="osint-check.html" class="active">EN</a></div>
+    <header class="hero">
+        <a href="index.html" style="text-decoration: none;"><img src="logo.svg" alt="FOSSpel Logo" class="hero-logo"></a>
+        <h1>OSINT Intelligence Scanner</h1>
+        <p class="subtitle">Check Email validity, IP location, and Domain ownership in one click.</p>
+    </header>
+
+    <main class="container">
+        <section class="tool-card" style="max-width: 800px; margin: 0 auto;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                <input type="text" id="targetInput" placeholder="Enter email, domain or IP..." style="flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #1a1a1a; color: white;">
+                <button onclick="startScan()" class="button">Scan Target</button>
+            </div>
+            
+            <div id="loading" style="display:none; margin-top: 20px;">
+                <div class="loader"></div> Processing data...
+            </div>
+
+            <div id="resultsArea" class="results-area">
+                <div class="res-grid">
+                    <!-- Email Module -->
+                    <div id="emailBox" class="res-card" style="display:none;">
+                        <h3>Email Intelligence</h3>
+                        <div id="emailStatus"></div>
+                    </div>
+                    <!-- Geo Module -->
+                    <div class="res-card">
+                        <h3>Infrastructure & Geo</h3>
+                        <div id="geoData"></div>
+                    </div>
+                    <!-- WHOIS Module -->
+                    <div class="res-card">
+                        <h3>WHOIS Registry</h3>
+                        <pre id="whoisData">No data</pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        async function startScan() {
+            const input = document.getElementById('targetInput').value.trim();
+            if (!input) return;
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsArea').style.display = 'none';
+
+            const isEmail = input.includes('@');
+            const target = isEmail ? input.split('@')[1] : input;
+
+            // Reset UI
+            document.getElementById('emailBox').style.display = isEmail ? 'block' : 'none';
+
+            try {
+                const results = await Promise.allSettled([
+                    isEmail ? fetch(`https://disposable.debounce.io/?email=${input}`).then(r => r.json()) : Promise.resolve(null),
+                    fetch(`https://freeipapi.com/api/json/${target}`).then(r => r.json()),
+                    fetch(`https://who-dat.as93.net/${target}`).then(r => r.json())
+                ]);
+
+                // 1. Email Disposable Check
+                if (isEmail && results[0].status === 'fulfilled' && results[0].value) {
+                    const isDisp = results[0].value.disposable === "true";
+                    document.getElementById('emailStatus').innerHTML = isDisp 
+                        ? `<span class="status-badge badge-warning">⚠️ Disposable Email</span><p style="font-size:0.9rem; margin-top:10px;">This address belongs to a temporary mail service.</p>`
+                        : `<span class="status-badge badge-safe">✅ Clean Email</span><p style="font-size:0.9rem; margin-top:10px;">This is a permanent email provider.</p>`;
+                }
+
+                // 2. Geo & Infrastructure
+                if (results[1].status === 'fulfilled') {
+                    const g = results[1].value;
+                    document.getElementById('geoData').innerHTML = `
+                        <p><strong>Location:</strong> ${g.countryName}, ${g.cityName}</p>
+                        <p><strong>IP Address:</strong> ${g.ipAddress}</p>
+                        <p><strong>ASN:</strong> ${g.asName || 'N/A'}</p>
+                    `;
+                }
+
+                // 3. WHOIS
+                if (results[2].status === 'fulfilled' && !results[2].value.error) {
+                    const w = results[2].value;
+                    document.getElementById('whoisData').textContent = 
+                        `Registrar: ${w.registrar || 'Unknown'}\nCreated: ${w.created_date || 'N/A'}\nExpires: ${w.expiration_date || 'N/A'}\nStatus: ${w.status || 'Active'}`;
+                } else {
+                    document.getElementById('whoisData').textContent = "WHOIS info not available for this target.";
+                }
+
+            } catch (err) {
+                console.error(err);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('resultsArea').style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
