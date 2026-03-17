@@ -1,90 +1,49 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OSINT Scanner | {FOSSpel}</title>
-    <link rel="stylesheet" href="css/style.css?v=1.2">
-    <style>
-        .osint-container { max-width: 600px; margin: 40px auto; padding: 20px; background: #1a1a1a; border-radius: 12px; border: 1px solid #333; font-family: 'Inter', sans-serif; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
-        .input-group input { flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #444; background: #000; color: #fff; outline: none; }
-        .res-block { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #333; }
-        .data-item { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; }
-        .label { color: #888; }
-        .value { color: #fff; font-weight: 600; text-align: right; }
-        .status-ok { color: #50fa7b; font-weight: bold; }
-        .status-bad { color: #ff5555; font-weight: bold; }
-        .whois-btn { display: block; width: 100%; text-align: center; background: #333; color: #fff; padding: 10px; border-radius: 6px; text-decoration: none; margin-top: 20px; font-size: 12px; transition: 0.3s; }
-        .whois-btn:hover { background: #444; }
-    </style>
-</head>
-<body>
-    <div class="osint-container">
-        <h2 style="text-align:center; color:#ff9d00; margin-bottom:30px;">OSINT Scanner</h2>
+async function scan() {
+    const inputField = document.getElementById('target');
+    let val = inputField.value.trim();
+    if(!val) return;
+
+    const btn = document.getElementById('scanBtn');
+    const resBlock = document.getElementById('results');
+    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev";
+
+    btn.innerText = "wait...";
+    resBlock.style.display = 'none';
+
+    try {
+        const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}`);
+        const data = await res.json();
         
-        <div class="input-group">
-            <input type="text" id="target" placeholder="Email, домен или IP...">
-            <button onclick="scan()" class="button" id="scanBtn">Scan</button>
-        </div>
-
-        <div id="results" class="res-block">
-            <div id="emailInfo"></div>
-            <div id="geoInfo"></div>
-            <a id="whoisLink" href="#" target="_blank" class="whois-btn">ПОЛНЫЙ WHOIS ОТЧЕТ ↗</a>
-        </div>
-    </div>
-
-    <script>
-        async function scan() {
-            const val = document.getElementById('target').value.trim();
-            if(!val) return;
-
-            const btn = document.getElementById('scanBtn');
-            const resBlock = document.getElementById('results');
-            const workerUrl = "https://fosspel-api.okuptcov4.workers.dev";
-
-            btn.innerText = "...";
-            resBlock.style.display = 'none';
-
-            try {
-                const res = await fetch(`${workerUrl}/?target=${val}`);
-                const data = await res.json();
-                
-                if (data.error) throw new Error(data.error);
-
-                // 1. Обработка Email
-                let emailHtml = '';
-                if (data.isEmail) {
-                    const statusClass = data.disposable ? 'status-bad' : 'status-ok';
-                    const statusText = data.disposable ? 'ОДНОРАЗОВАЯ (BURNER)' : 'ПОСТОЯННАЯ (SAFE)';
-                    emailHtml = `
-                        <div class="data-item">
-                            <span class="label">Анализ почты:</span>
-                            <span class="value ${statusClass}">${statusText}</span>
-                        </div><hr style="border:0; border-top:1px solid #333; margin:15px 0;">`;
-                }
-                document.getElementById('emailInfo').innerHTML = emailHtml;
-
-                // 2. Обработка Гео
-                document.getElementById('geoInfo').innerHTML = `
-                    <div class="data-item"><span class="label">IP Адрес:</span><span class="value">${data.ip}</span></div>
-                    <div class="data-item"><span class="label">Страна:</span><span class="value">${data.country}</span></div>
-                    <div class="data-item"><span class="label">Город:</span><span class="value">${data.city}</span></div>
-                    <div class="data-item"><span class="label">Провайдер:</span><span class="value">${data.isp}</span></div>
-                `;
-
-                // 3. Ссылка на WHOIS
-                document.getElementById('whoisLink').href = `https://who.is/whois/${data.domain}`;
-                
-                resBlock.style.display = 'block';
-
-            } catch (err) {
-                alert("Ошибка: " + err.message);
-            } finally {
-                btn.innerText = "Scan";
-            }
+        if (!data.success && !data.isEmail) {
+            throw new Error("Не удалось найти данные для этого домена.");
         }
-    </script>
-</body>
-</html>
+
+        // Вывод почты
+        let emailHtml = '';
+        if (data.isEmail) {
+            const statusClass = data.disposable ? 'status-bad' : 'status-ok';
+            const statusText = data.disposable ? 'ОДНОРАЗОВАЯ' : 'ЧИСТАЯ';
+            emailHtml = `<div class="data-item"><span class="label">Почта:</span><span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333">`;
+        }
+        document.getElementById('emailInfo').innerHTML = emailHtml;
+
+        // Вывод Гео
+        document.getElementById('geoInfo').innerHTML = `
+            <div class="data-item"><span class="label">IP Адрес:</span><span class="value">${data.ip}</span></div>
+            <div class="data-item"><span class="label">Страна:</span><span class="value">${data.country}</span></div>
+            <div class="data-item"><span class="label">Город:</span><span class="value">${data.city}</span></div>
+            <div class="data-item"><span class="label">Провайдер:</span><span class="value">${data.isp}</span></div>
+        `;
+
+        // Ссылка на WHOIS (теперь точно без www)
+        document.getElementById('whoisLink').href = `https://whois.domaintools.com/${data.domain}`;
+        document.getElementById('whoisLink').innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain} ↗`;
+        
+        resBlock.style.display = 'block';
+
+    } catch (err) {
+        alert("Ошибка анализа: " + err.message);
+    } finally {
+        btn.innerText = "Scan";
+    }
+}
