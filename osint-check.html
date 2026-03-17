@@ -1,44 +1,72 @@
 async function scan() {
-    const val = document.getElementById('target').value.trim();
-    if(!val) return;
+    const inputField = document.getElementById('target');
+    if (!inputField) return;
+    
+    let val = inputField.value.trim();
+    if (!val) return;
 
     const btn = document.getElementById('scanBtn');
     const resBlock = document.getElementById('results');
+    
+    // ✅ Убраны лишние пробелы в URL
     const workerUrl = "https://fosspel-api.okuptcov4.workers.dev";
 
-    btn.innerText = "Processing...";
-    resBlock.style.display = 'none';
+    // Сохраняем исходный текст кнопки для восстановления
+    const originalBtnText = btn.innerText;
+    btn.innerText = "wait...";
+    
+    if (resBlock) resBlock.style.display = 'none';
 
     try {
+        // Добавляем timestamp, чтобы избежать кэширования
         const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}&t=${Date.now()}`);
+        
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        
         const data = await res.json();
         
-        // Почта
-        let emailHtml = '';
-        if (data.isEmail) {
+        // ✅ Безопасная работа с почтой
+        const emailInfo = document.getElementById('emailInfo');
+        if (emailInfo && data.isEmail) {
             const statusClass = data.disposable ? 'status-bad' : 'status-ok';
             const statusText = data.disposable ? 'ОДНОРАЗОВАЯ' : 'ЧИСТАЯ';
-            emailHtml = `<div class="data-item"><span class="label">Анализ почты:</span> <span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333; margin:10px 0;">`;
+            emailInfo.innerHTML = `
+                <div class="data-item">
+                    <span class="label">Почта:</span> 
+                    <span class="${statusClass}">${statusText}</span>
+                </div>
+                <hr style="border-color:#333; margin:10px 0;">
+            `;
+        } else if (emailInfo) {
+            emailInfo.innerHTML = ''; // Очищаем, если не email
         }
-        document.getElementById('emailInfo').innerHTML = emailHtml;
 
-        // Гео данные
-        document.getElementById('geoInfo').innerHTML = `
-            <div class="data-item"><span>IP Адрес:</span> <strong>${data.ip}</strong></div>
-            <div class="data-item"><span>Страна:</span> <strong>${data.country}</strong></div>
-            <div class="data-item"><span>Город:</span> <strong>${data.city}</strong></div>
-            <div class="data-item"><span>Провайдер:</span> <strong>${data.isp}</strong></div>
-        `;
+        // ✅ Безопасная работа с гео-данными
+        const geoInfo = document.getElementById('geoInfo');
+        if (geoInfo) {
+            geoInfo.innerHTML = `
+                <div class="data-item"><span class="label">IP Адрес:</span> <span class="value">${data.ip ?? "N/A"}</span></div>
+                <div class="data-item"><span class="label">Страна:</span> <span class="value">${data.country ?? "N/A"}</span></div>
+                <div class="data-item"><span class="label">Город:</span> <span class="value">${data.city ?? "N/A"}</span></div>
+                <div class="data-item"><span class="label">Провайдер:</span> <span class="value">${data.isp ?? "N/A"}</span></div>
+            `;
+        }
 
-        // WHOIS
-        document.getElementById('whoisLink').href = `https://whois.domaintools.com/${data.domain}`;
-        document.getElementById('whoisLink').innerText = `WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
+        // ✅ Безопасная работа с WHOIS-ссылкой (без пробелов!)
+        const whoisLink = document.getElementById('whoisLink');
+        if (whoisLink && data.domain) {
+            whoisLink.href = `https://whois.domaintools.com/${encodeURIComponent(data.domain)}`;
+            whoisLink.innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
+        }
         
-        resBlock.style.display = 'block';
+        if (resBlock) resBlock.style.display = 'block';
 
     } catch (err) {
+        console.error("Scan error:", err); // ← Смотрите в консоль (F12)
         alert("Ошибка: " + err.message);
     } finally {
-        btn.innerText = "Scan";
+        if (btn) btn.innerText = originalBtnText || "Scan";
     }
 }
