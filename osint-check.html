@@ -1,17 +1,15 @@
 async function scan() {
-    const inputField = document.getElementById('target');
-    let val = inputField.value.trim();
+    const val = document.getElementById('target').value.trim();
     if(!val) return;
 
     const btn = document.getElementById('scanBtn');
     const resBlock = document.getElementById('results');
     const workerUrl = "https://fosspel-api.okuptcov4.workers.dev";
 
-    btn.innerText = "wait...";
+    btn.innerText = "Processing...";
     resBlock.style.display = 'none';
 
     try {
-        // Добавляем timestamp, чтобы избежать кэширования ошибок
         const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}&t=${Date.now()}`);
         const data = await res.json();
         
@@ -20,21 +18,21 @@ async function scan() {
         if (data.isEmail) {
             const statusClass = data.disposable ? 'status-bad' : 'status-ok';
             const statusText = data.disposable ? 'ОДНОРАЗОВАЯ' : 'ЧИСТАЯ';
-            emailHtml = `<div class="data-item"><span class="label">Почта:</span> <span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333; margin:10px 0;">`;
+            emailHtml = `<div class="data-item"><span class="label">Анализ почты:</span> <span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333; margin:10px 0;">`;
         }
         document.getElementById('emailInfo').innerHTML = emailHtml;
 
-        // Гео (если данных нет, будет N/A, но страница не упадет)
+        // Гео данные
         document.getElementById('geoInfo').innerHTML = `
-            <div class="data-item"><span class="label">IP Адрес:</span> <span class="value">${data.ip}</span></div>
-            <div class="data-item"><span class="label">Страна:</span> <span class="value">${data.country}</span></div>
-            <div class="data-item"><span class="label">Город:</span> <span class="value">${data.city}</span></div>
-            <div class="data-item"><span class="label">Провайдер:</span> <span class="value">${data.isp}</span></div>
+            <div class="data-item"><span>IP Адрес:</span> <strong>${data.ip}</strong></div>
+            <div class="data-item"><span>Страна:</span> <strong>${data.country}</strong></div>
+            <div class="data-item"><span>Город:</span> <strong>${data.city}</strong></div>
+            <div class="data-item"><span>Провайдер:</span> <strong>${data.isp}</strong></div>
         `;
 
         // WHOIS
         document.getElementById('whoisLink').href = `https://whois.domaintools.com/${data.domain}`;
-        document.getElementById('whoisLink').innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
+        document.getElementById('whoisLink').innerText = `WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
         
         resBlock.style.display = 'block';
 
