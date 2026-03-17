@@ -14,8 +14,9 @@ async function scan() {
         const res = await fetch(`${workerUrl}/?target=${encodeURIComponent(val)}`);
         const data = await res.json();
         
-        if (!data.success && !data.isEmail) {
-            throw new Error("Не удалось найти данные для этого домена.");
+        // Если API не нашло домен (success: false), выводим ошибку
+        if (!data.success) {
+            throw new Error("Домен не найден или защищен.");
         }
 
         // Вывод почты
@@ -23,26 +24,26 @@ async function scan() {
         if (data.isEmail) {
             const statusClass = data.disposable ? 'status-bad' : 'status-ok';
             const statusText = data.disposable ? 'ОДНОРАЗОВАЯ' : 'ЧИСТАЯ';
-            emailHtml = `<div class="data-item"><span class="label">Почта:</span><span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333">`;
+            emailHtml = `<div class="data-item"><span class="label">Почта:</span> <span class="${statusClass}">${statusText}</span></div><hr style="border-color:#333; margin:10px 0;">`;
         }
         document.getElementById('emailInfo').innerHTML = emailHtml;
 
         // Вывод Гео
         document.getElementById('geoInfo').innerHTML = `
-            <div class="data-item"><span class="label">IP Адрес:</span><span class="value">${data.ip}</span></div>
-            <div class="data-item"><span class="label">Страна:</span><span class="value">${data.country}</span></div>
-            <div class="data-item"><span class="label">Город:</span><span class="value">${data.city}</span></div>
-            <div class="data-item"><span class="label">Провайдер:</span><span class="value">${data.isp}</span></div>
+            <div class="data-item"><span class="label">IP Адрес:</span> <span class="value">${data.ip}</span></div>
+            <div class="data-item"><span class="label">Страна:</span> <span class="value">${data.country}</span></div>
+            <div class="data-item"><span class="label">Город:</span> <span class="value">${data.city}</span></div>
+            <div class="data-item"><span class="label">Провайдер:</span> <span class="value">${data.isp}</span></div>
         `;
 
-        // Ссылка на WHOIS (теперь точно без www)
+        // Прямая ссылка на WHOIS для nare37.com
         document.getElementById('whoisLink').href = `https://whois.domaintools.com/${data.domain}`;
-        document.getElementById('whoisLink').innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain} ↗`;
+        document.getElementById('whoisLink').innerText = `ПОЛНЫЙ WHOIS ОТЧЕТ ДЛЯ ${data.domain.toUpperCase()} ↗`;
         
         resBlock.style.display = 'block';
 
     } catch (err) {
-        alert("Ошибка анализа: " + err.message);
+        alert("Ошибка: " + err.message);
     } finally {
         btn.innerText = "Scan";
     }
