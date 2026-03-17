@@ -2,31 +2,44 @@ async function scan() {
     const val = document.getElementById('target').value.trim();
     if(!val) return;
 
-    // Скрываем кнопку, показываем лоадер (если есть)
-    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev"; 
+    const workerUrl = "https://fosspel-api.okuptcov4.workers.dev";
+    const resultsDiv = document.getElementById('geo-results');
+    const resultsBlock = document.getElementById('results');
+
+    resultsDiv.innerHTML = "Сканирование..."; 
+    resultsBlock.style.display = 'block';
 
     try {
         const res = await fetch(`${workerUrl}/?target=${val}`);
         const data = await res.json();
         
-        if (data.error) {
-            alert("Ошибка воркера: " + data.error);
-            return;
+        if (data.error) throw new Error(data.error);
+
+        let html = '';
+
+        // Если проверяли Email
+        if (data.isEmail) {
+            const badgeClass = data.disposable ? 'status-bad' : 'status-ok';
+            const badgeText = data.disposable ? 'ОПАСНО: ОДНОРАЗОВАЯ' : 'ЧИСТАЯ ПОЧТА';
+            html += `<div style="margin-bottom:15px; border-bottom:1px solid #333; padding-bottom:10px;">
+                        <strong>Анализ Email:</strong> <span class="${badgeClass}">${badgeText}</span>
+                     </div>`;
         }
 
-        // Вывод данных
-        document.getElementById('geo-results').innerHTML = `
-            <div style="margin-bottom:10px;"><strong>IP:</strong> ${data.ip}</div>
-            <div style="margin-bottom:10px;"><strong>Страна:</strong> ${data.country}</div>
-            <div style="margin-bottom:10px;"><strong>Город:</strong> ${data.city}</div>
-            <div style="margin-bottom:10px;"><strong>Провайдер:</strong> ${data.org}</div>
+        // Данные об инфраструктуре
+        html += `
+            <div class="data-row"><span>IP:</span> <span>${data.ip}</span></div>
+            <div class="data-row"><span>Страна:</span> <span>${data.country}</span></div>
+            <div class="data-row"><span>Город:</span> <span>${data.city}</span></div>
+            <div class="data-row"><span>Провайдер:</span> <span>${data.isp}</span></div>
+            <div style="margin-top:20px; text-align:center;">
+                <a href="https://who.is/whois/${data.domain}" target="_blank" class="button" style="font-size:12px; padding:8px;">ПОЛНЫЙ WHOIS ОТЧЕТ ↗</a>
+            </div>
         `;
-        
-        // Показываем блок результатов
-        document.getElementById('results').style.display = 'block';
+
+        resultsDiv.innerHTML = html;
 
     } catch (err) {
-        console.error(err);
-        alert("Не удалось связаться с воркером. Проверьте консоль (F12).");
+        resultsDiv.innerHTML = `<span class="status-bad">Ошибка: ${err.message}</span>`;
     }
 }
