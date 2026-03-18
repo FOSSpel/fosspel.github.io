@@ -83,6 +83,15 @@
     <noscript><div><img src="https://mc.yandex.ru/watch/107077871" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 
     <style>
+        /* Make logo clickable */
+        .hero-logo {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .hero-logo:hover {
+            opacity: 0.8;
+        }
+
         /* Tool-specific styles (extending main CSS) */
         .tool-header {
             text-align: center;
@@ -516,7 +525,7 @@
 
     <header class="hero">
         <div class="hero-content">
-            <img src="logo.svg" alt="FOSSpel Logo" class="hero-logo">
+            <img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" onclick="window.location.href='index.html'" style="cursor: pointer;">
             <div class="text-xl">
                 <p>Free & Open Source Software +<br>Gospel = {FOSSpel}</p>
             </div>
@@ -636,7 +645,7 @@
             <strong>Why remove metadata?</strong> Photos from phones contain GPS coordinates, date/time, camera model, and sometimes even face data. We strip it all automatically. Your location stays private.
         </div>
 
-        <!-- Real-World Use Cases -->
+        <!-- Real-World Use Cases (6 items for perfect grid) -->
         <h2>Why optimize images? (Real-world use cases)</h2>
         <div class="use-cases-grid">
             <div class="use-case-card">
@@ -676,6 +685,56 @@
                 </svg>
                 <h4>Privacy Protection</h4>
                 <p>Remove GPS coordinates before sharing photos online. Don't let strangers know where you live.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <h4>Job Applications</h4>
+                <p>Many companies reject large resume attachments. Compress portfolio images to stay under 5MB limits.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path>
+                </svg>
+                <h4>E-commerce</h4>
+                <p>Product pages with optimized images load faster and convert better. Amazon found every 100ms delay costs 1% in sales.</p>
+            </div>
+        </div>
+
+        <!-- Why FOSSpel is Different (4 items for perfect grid) -->
+        <h2>Why {FOSSpel} is different</h2>
+        <div class="philosophy-grid" style="margin: 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <h3>100% Client-Side</h3>
+                <p>Your images never leave your device. No upload, no servers, no tracking.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <h3>No Limits</h3>
+                <p>Compress as many images as you want, any size. No daily quotas.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <h3>Open Source</h3>
+                <p>Built with WASM + Canvas. Transparent, auditable, and inspired by Christian values.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <h3>Built with Love</h3>
+                <p>A faith-based project serving people, not corporations. No ads, no tracking, forever free.</p>
             </div>
         </div>
 
@@ -740,34 +799,6 @@
             <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
                 [1] Source: tinypng.com/pricing (2026) | [2] Source: iloveimg.com/pricing (2026) | [3] Source: compressor.io/pricing (2026)
             </p>
-        </div>
-
-        <!-- Why FOSSpel is Different -->
-        <h2>Why {FOSSpel} is different</h2>
-        <div class="philosophy-grid" style="margin: 2rem 0;">
-            <div class="philosophy-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <h3>100% Client-Side</h3>
-                <p>Your images never leave your device. No upload, no servers, no tracking.</p>
-            </div>
-            <div class="philosophy-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                    <circle cx="12" cy="12" r="3"></circle>
-                </svg>
-                <h3>No Limits</h3>
-                <p>Compress as many images as you want, any size. No daily quotas.</p>
-            </div>
-            <div class="philosophy-item">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
-                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                </svg>
-                <h3>Open Source</h3>
-                <p>Built with WASM + Canvas. Transparent, auditable, and inspired by Christian values.</p>
-            </div>
         </div>
 
         <!-- FAQ (SEO) -->
@@ -863,6 +894,11 @@
     </footer>
 
     <script>
+        // Make logo clickable
+        document.querySelector('.hero-logo').addEventListener('click', function() {
+            window.location.href = 'index.html';
+        });
+
         // Main JavaScript for Image Optimizer
         (function() {
             // DOM Elements
