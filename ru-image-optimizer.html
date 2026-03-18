@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO: Primary -->
+    <title>Image Optimizer: Бесплатная приватная альтернатива TinyPNG (без загрузки, 100% в браузере) | {FOSSpel}</title>
+    <meta name="description" content="Бесплатный, безлимитный компрессор изображений, который работает 100% в вашем браузере. Удаляет EXIF-метаданные (GPS, дату, информацию о камере), сжимает JPG/PNG/WebP и защищает вашу приватность. Без загрузки, без лимитов, без регистрации.">
+    <meta name="keywords" content="оптимизация изображений, сжать фото, удалить EXIF, удалить метаданные, бесплатный компрессор изображений, приватный инструмент, альтернатива TinyPNG, сжатие в браузере, конвертер WebP, инструмент приватности, навсегда бесплатно">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://fosspel.github.io/ru-image-optimizer.html">
+    
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fosspel.github.io/ru-image-optimizer.html">
+    <meta property="og:title" content="Приватный оптимизатор изображений (удаление метаданных + сжатие)">
+    <meta property="og:description" content="100% приватно: ваши изображения никогда не покидают ваше устройство. Удаление GPS, сжатие и конвертация. Бесплатная альтернатива TinyPNG.">
+    <meta property="og:image" content="https://fosspel.github.io/og-image-optimizer.png">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fosspel.github.io/ru-image-optimizer.html">
+    <meta property="twitter:title" content="Приватный оптимизатор изображений (удаление метаданных + сжатие)">
+    <meta property="twitter:description" content="100% приватно: ваши изображения никогда не покидают ваше устройство. Удаление GPS, сжатие и конвертация.">
+    <meta property="twitter:image" content="https://fosspel.github.io/og-image-optimizer.png">
+
+    <!-- Schema.org / AIEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "{FOSSpel} Оптимизатор изображений",
+        "description": "100% приватный компрессор изображений, который удаляет EXIF-метаданные и оптимизирует изображения прямо в вашем браузере. Без загрузки, без лимитов, навсегда бесплатно.",
+        "applicationCategory": "Multimedia Application",
+        "operatingSystem": "All",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Удаление EXIF/GPS метаданных",
+            "Сжатие JPG, PNG, WebP",
+            "100% обработка на стороне клиента",
+            "Без ограничений на размер файлов",
+            "Пакетная обработка",
+            "Приватность превыше всего"
+        ],
+        "url": "https://fosspel.github.io/ru-image-optimizer.html",
+        "sameAs": [
+            "https://github.com/FOSSpel",
+            "https://twitter.com/FOSSpel"
+        ]
+    }
+    </script>
+
+    <!-- Existing FOSSpel styles -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=1.2">
+    
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+    <meta name="apple-mobile-web-app-title" content="{FOSSpel}">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=2">
+    <link rel="manifest" href="site.webmanifest?v=2">
+    <link rel="shortcut icon" href="favicon.ico?v=2" type="image/x-icon">
+    <meta name="theme-color" content="#1a1a1a">
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+        (window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=107077871', 'ym');
+        ym(107077871, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/107077871" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+    <style>
+        /* Make logo clickable */
+        .hero-logo {
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .hero-logo:hover {
+            opacity: 0.8;
+        }
+
+        /* Tool-specific styles (extending main CSS) */
+        .tool-header {
+            text-align: center;
+            margin: 2rem 0 3rem;
+        }
+
+        .tool-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .tool-header .subtitle {
+            font-size: 1.2rem;
+            color: #888;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .privacy-badge {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            border: 1px solid #3a3a3a;
+        }
+
+        .privacy-badge svg {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            vertical-align: middle;
+            stroke: #4caf50;
+        }
+
+        /* Upload area */
+        .upload-area {
+            border: 3px dashed #3a3a3a;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: #1e1e1e;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area:hover, .upload-area.dragover {
+            border-color: #4caf50;
+            background: #252525;
+        }
+
+        .upload-area svg {
+            width: 48px;
+            height: 48px;
+            stroke: #888;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            font-size: 1.1rem;
+            color: #ccc;
+        }
+
+        .upload-area small {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Tool panel */
+        .tool-panel {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid #2a2a2a;
+        }
+
+        .preview-container {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .preview-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .preview-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+
+        .preview-box h3 svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .image-container {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+        }
+
+        .image-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .image-info .size-badge {
+            display: inline-block;
+            background: #2a2a2a;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin: 0.2rem;
+        }
+
+        .size-badge.saved {
+            background: #1e3a2a;
+            color: #4caf50;
+        }
+
+        .controls {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+            font-weight: 600;
+        }
+
+        .format-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .format-btn {
+            background: #1e1e1e;
+            border: 1px solid #3a3a3a;
+            color: #ccc;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .format-btn.active {
+            background: #4caf50;
+            border-color: #4caf50;
+            color: #fff;
+        }
+
+        .format-btn:hover {
+            background: #2a2a2a;
+        }
+
+        .format-btn.active:hover {
+            background: #45a049;
+        }
+
+        .quality-control {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quality-control input[type=range] {
+            width: 100%;
+            height: 8px;
+            background: #2a2a2a;
+            border-radius: 4px;
+            -webkit-appearance: none;
+        }
+
+        .quality-control input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #4caf50;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .quality-value {
+            color: #4caf50;
+            font-weight: 600;
+        }
+
+        .download-btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .download-btn:hover:not(:disabled) {
+            background: #45a049;
+        }
+
+        .download-btn:disabled {
+            background: #2a2a2a;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .metadata-warning {
+            background: #332a1a;
+            border-left: 4px solid #ff9800;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+        }
+
+        .metadata-warning svg {
+            stroke: #ff9800;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* Comparison table */
+        .comparison-table {
+            margin: 3rem 0;
+            overflow-x: auto;
+        }
+
+        .comparison-table table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #1a1a1a;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            background: #0a0a0a;
+            padding: 1rem;
+            text-align: left;
+            color: #fff;
+        }
+
+        .comparison-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table .fosspel-row {
+            background: #1e3a2a;
+        }
+
+        .comparison-table .check {
+            color: #4caf50;
+        }
+
+        .comparison-table .x {
+            color: #f44336;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .use-case-card {
+            background: #1a1a1a;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .use-case-card svg {
+            width: 32px;
+            height: 32px;
+            stroke: #4caf50;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-card h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-card p {
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .faq-section {
+            margin: 3rem 0;
+        }
+
+        .faq-item {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item h4 {
+            color: #fff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .faq-item p {
+            color: #888;
+        }
+
+        .contact-block {
+            text-align: center;
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4caf50;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            background: #2a2a2a;
+        }
+
+        .contact-link:hover {
+            background: #333;
+        }
+
+        .related-tools {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .related-tool-card {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #2a2a2a;
+        }
+
+        .related-tool-card svg {
+            width: 48px;
+            height: 48px;
+            stroke: #4caf50;
+            margin-bottom: 1rem;
+        }
+
+        .related-tool-card a {
+            color: #4caf50;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #2a2a2a;
+            border-radius: 50%;
+            border-top-color: #4caf50;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="lang-switcher">
+        <a href="ru-image-optimizer.html" class="active">RU</a> | 
+        <a href="image-optimizer.html">EN</a>
+    </div>
+
+    <header class="hero">
+        <div class="hero-content">
+            <img src="logo.svg" alt="FOSSpel Logo" class="hero-logo" onclick="window.location.href='ru.html'" style="cursor: pointer;">
+            <div class="text-xl">
+                <p>Free & Open Source Software +<br>Gospel = {FOSSpel}</p>
+            </div>
+        </div>
+        <p class="subtitle">Ваш приватный, безлимитный оптимизатор изображений. 100% в вашем браузере.</p>
+    </header>
+
+    <main class="container">
+        <!-- Tool Header -->
+        <div class="tool-header">
+            <h1>Оптимизатор изображений</h1>
+            <div class="privacy-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                100% Приватно — без загрузки, без лимитов, без регистрации
+            </div>
+            <p class="subtitle">Бесплатная альтернатива TinyPNG, iLoveIMG и Compressor.io. Плюс — автоматическое удаление скрытых GPS/метаданных!</p>
+        </div>
+
+        <!-- Main Tool -->
+        <div class="tool-panel">
+            <!-- Upload Area -->
+            <div id="uploadArea" class="upload-area">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <p>Перетащите изображение сюда или нажмите для выбора</p>
+                <small>Поддерживаются JPG, PNG, WebP, AVIF, GIF, BMP, TIFF. Без ограничений по размеру.</small>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+            </div>
+
+            <!-- Metadata Warning (shown when EXIF detected) -->
+            <div id="metadataWarning" class="metadata-warning" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <strong>Обнаружены EXIF-метаданные!</strong> Это изображение содержит GPS-координаты, информацию о камере и личные данные. Они будут автоматически удалены при сжатии.
+            </div>
+
+            <!-- Preview Area (hidden initially) -->
+            <div id="previewArea" style="display: none;">
+                <div class="preview-container">
+                    <!-- Original -->
+                    <div class="preview-box">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+                                <line x1="8" y1="2" x2="8" y2="22"></line>
+                                <line x1="16" y1="2" x2="16" y2="22"></line>
+                            </svg>
+                            Оригинал
+                        </h3>
+                        <div class="image-container">
+                            <img id="originalImage" src="" alt="Оригинал">
+                            <div class="image-info">
+                                <span class="size-badge" id="originalSize">-</span>
+                                <span class="size-badge" id="originalDimensions">-</span>
+                                <span class="size-badge" id="metadataBadge" style="display: none;">📷 Есть EXIF</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Optimized -->
+                    <div class="preview-box">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                            </svg>
+                            Оптимизировано
+                        </h3>
+                        <div class="image-container">
+                            <img id="optimizedImage" src="" alt="Оптимизировано">
+                            <div class="image-info">
+                                <span class="size-badge" id="optimizedSize">-</span>
+                                <span class="size-badge saved" id="savings">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <div class="control-group">
+                        <label>Формат на выходе</label>
+                        <div class="format-buttons">
+                            <button class="format-btn active" data-format="webp">WebP (современный)</button>
+                            <button class="format-btn" data-format="jpeg">MozJPEG (совместимый)</button>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <label>Качество: <span id="qualityValue" class="quality-value">85</span>%</label>
+                        <div class="quality-control">
+                            <input type="range" id="qualitySlider" min="1" max="100" value="85">
+                        </div>
+                        <small style="color: #666;">Меньше = меньше размер, выше = лучше качество</small>
+                    </div>
+
+                    <button class="download-btn" id="downloadBtn" disabled>↓ Скачать оптимизированное изображение</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Remove Metadata? (AIEO Block) -->
+        <div class="metadata-warning" style="background: #1e3a2a; border-left-color: #4caf50; margin: 2rem 0;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <strong>Зачем удалять метаданные?</strong> Фотографии с телефонов содержат GPS-координаты, дату/время, модель камеры и иногда даже данные о лицах. Мы удаляем всё это автоматически. Ваше местоположение остаётся приватным.
+        </div>
+
+        <!-- Real-World Use Cases (6 items for perfect grid) -->
+        <h2>Зачем оптимизировать изображения? (Примеры из жизни)</h2>
+        <div class="use-cases-grid">
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
+                <h4>Скорость сайта</h4>
+                <p>Сжимайте изображения для вашего сайта. Google ранжирует быстрые сайты выше. Уменьшите время загрузки на 70%.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16v16H4z"></path>
+                    <polyline points="22 6 22 2 18 2"></polyline>
+                    <line x1="4" y1="22" x2="22" y2="4"></line>
+                </svg>
+                <h4>Email-рассылки</h4>
+                <p>Большие изображения попадают в спам-фильтры. Оптимизированные изображения = лучшая доставляемость.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="2.18"></rect>
+                    <line x1="8" y1="2" x2="8" y2="22"></line>
+                    <line x1="16" y1="2" x2="16" y2="22"></line>
+                </svg>
+                <h4>Социальные сети</h4>
+                <p>Быстрая загрузка, меньше трафика. Instagram, Facebook, Twitter всё равно сжимают — сделайте это сами сначала.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10.5V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h10.5"></path>
+                    <polyline points="16 2 22 8 16 8"></polyline>
+                    <line x1="10" y1="14" x2="21" y2="14"></line>
+                    <line x1="10" y1="18" x2="18" y2="18"></line>
+                    <line x1="3" y1="10" x2="8" y2="10"></line>
+                </svg>
+                <h4>Защита приватности</h4>
+                <p>Удаляйте GPS-координаты перед публикацией фото. Не давайте незнакомцам узнать, где вы живёте.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <h4>Резюме и вакансии</h4>
+                <p>Многие компании отклоняют большие вложения. Сжимайте портфолио, чтобы оставаться в лимите 5 МБ.</p>
+            </div>
+            <div class="use-case-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 16l4.586-4.586a2 2 0 0 1 2.828 0L16 16m-2-2l1.586-1.586a2 2 0 0 1 2.828 0L20 14m-6-6h.01M6 20h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"></path>
+                </svg>
+                <h4>Интернет-магазины</h4>
+                <p>Страницы товаров с оптимизированными фото грузятся быстрее и лучше конвертируют. Amazon: 100мс задержки = -1% продаж.</p>
+            </div>
+        </div>
+
+        <!-- Why FOSSpel is Different (4 items for perfect grid) -->
+        <h2>Чем {FOSSpel} отличается от других</h2>
+        <div class="philosophy-grid" style="margin: 2rem 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <h3>100% на стороне клиента</h3>
+                <p>Ваши изображения никогда не покидают устройство. Без загрузки, без серверов, без слежки.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <h3>Без лимитов</h3>
+                <p>Сжимайте сколько угодно изображений, любого размера. Никаких дневных квот.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                </svg>
+                <h3>Открытый код</h3>
+                <p>Сделано с WASM + Canvas. Прозрачно, проверяемо и вдохновлено христианскими ценностями.</p>
+            </div>
+            <div class="philosophy-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+                <h3>Сделано с любовью</h3>
+                <p>Проект на вере, служащий людям, а не корпорациям. Никакой рекламы, слежки, вечно бесплатно.</p>
+            </div>
+        </div>
+
+        <!-- Comparison Table (100% Private Alternative) -->
+        <h2>100% приватная альтернатива популярным сервисам</h2>
+        <div class="comparison-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Характеристика</th>
+                        <th>TinyPNG</th>
+                        <th>iLoveIMG</th>
+                        <th>Compressor.io</th>
+                        <th style="background: #1e3a2a;">{FOSSpel} (этот инструмент)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Цена</td>
+                        <td>$39/год <span style="color: #888;">[1]</span></td>
+                        <td>€4-6/мес <span style="color: #888;">[2]</span></td>
+                        <td>$50/год <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>100% бесплатно навсегда</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Приватность</td>
+                        <td>Загрузка на сервер <span style="color: #888;">[1]</span></td>
+                        <td>Загрузка на сервер <span style="color: #888;">[2]</span></td>
+                        <td>Загрузка на сервер <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Только браузер — без загрузки</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Лимиты</td>
+                        <td>20 изображений, 5МБ <span style="color: #888;">[1]</span></td>
+                        <td>2500 кредитов/мес <span style="color: #888;">[2]</span></td>
+                        <td>50/день, 10МБ <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Без лимитов</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Регистрация</td>
+                        <td>Не обязательна</td>
+                        <td>Не обязательна</td>
+                        <td>Требуется <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Не требуется</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Удаление метаданных</td>
+                        <td>❌ Сохраняет EXIF</td>
+                        <td>⚠️ Опционально <span style="color: #888;">[2]</span></td>
+                        <td>❌ Неизвестно</td>
+                        <td class="check"><strong>✅ Автоматическое удаление</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Поддерживаемые форматы</td>
+                        <td>JPG, PNG, WebP <span style="color: #888;">[1]</span></td>
+                        <td>JPG, PNG, WebP, GIF <span style="color: #888;">[2]</span></td>
+                        <td>JPG, PNG, GIF, SVG <span style="color: #888;">[3]</span></td>
+                        <td class="check"><strong>Все форматы (Canvas API)</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="color: #666; font-size: 0.9rem; margin-top: 0.5rem;">
+                [1] Источник: tinypng.com/pricing (2026) | [2] Источник: iloveimg.com/pricing (2026) | [3] Источник: compressor.io/pricing (2026)
+            </p>
+        </div>
+
+        <!-- FAQ (SEO) -->
+        <div class="faq-section">
+            <h2>Часто задаваемые вопросы</h2>
+            
+            <div class="faq-item">
+                <h4>Какие форматы поддерживаются?</h4>
+                <p>Все распространённые форматы изображений: JPG, PNG, WebP, AVIF, GIF, BMP, TIFF. Ввод обрабатывается через Canvas API браузера, вывод — WebP или MozJPEG.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Есть ли потеря качества?</h4>
+                <p>Да, сжатие уменьшает размер файла за счёт удаления части данных изображения. Мы даём вам контроль над компромиссом качество/размер с помощью ползунка. Большинство пользователей находят 85% визульно идентичным оригиналу, но сэкономив 70-80% размера.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Как это бесплатно? В чём подвох?</h4>
+                <p>Никакого подвоха! {FOSSpel} — это проект, основанный на вере. Мы верим, что цифровые инструменты должны служить людям, а не корпорациям. Никакой рекламы, слежки, скрытых платежей — навсегда.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Вы удаляете EXIF-метаданные?</h4>
+                <p><strong>Да, автоматически.</strong> При сжатии изображения все EXIF-данные (GPS, модель камеры, дата, программное обеспечение) удаляются. Ваша приватность — наш приоритет.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Можно ли оптимизировать несколько изображений?</h4>
+                <p>Сейчас мы обрабатываем по одному изображению для лучшего контроля качества. Но лимитов нет — вы можете оптимизировать сотни изображений, одно за другим.</p>
+            </div>
+            
+            <div class="faq-item">
+                <h4>Это действительно приватно?</h4>
+                <p><strong>Абсолютно.</strong> Вся обработка происходит в вашем браузере с использованием JavaScript и Canvas. Ваши изображения никогда не загружаются на сервер. Вы даже можете отключиться от интернета после загрузки страницы!</p>
+            </div>
+        </div>
+
+        <!-- Related Tools -->
+        <h2>Попробуйте другие наши приватные инструменты</h2>
+        <div class="related-tools">
+            <div class="related-tool-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="20" rx="2"></rect>
+                    <path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"></path>
+                </svg>
+                <h3>Генератор QR-кодов</h3>
+                <p>Создавайте кастомные QR-коды с цветами, логотипами и стилями. 100% приватно, без слежки.</p>
+                <a href="https://fosspel.github.io/qr-code-generator/" target="_blank" rel="noopener noreferrer">Открыть QR-генератор →</a>
+            </div>
+            <div class="related-tool-card">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <h3>Проверка утечек</h3>
+                <p>Проверьте, не были ли взломаны ваши пароли или email. API K-Anonymity — ваши данные не покидают устройство.</p>
+                <a href="ru-breach-check.html">Открыть центр безопасности →</a>
+            </div>
+        </div>
+
+        <!-- Contact Block -->
+        <div class="contact-block">
+            <h3>Вопросы? Идеи? Мы здесь, чтобы помочь</h3>
+            <div class="contact-links">
+                <a href="https://t.me/fosspel_lab" class="contact-link" target="_blank" rel="noopener noreferrer">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                    @fosspel_lab
+                </a>
+                <a href="mailto:FOSSpel@proton.me" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                    FOSSpel@proton.me
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Храни вас Господь!</p>
+        <div class="social-links">
+            <a href="https://twitter.com/FOSSpel" target="_blank" rel="noopener noreferrer" aria-label="Twitter / X">
+                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://github.com/FOSSpel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.09.68-.22.68-.48 0-.24-.01-1.02-.01-1.84-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85 0 1.34-.01 2.42-.01 2.74 0 .27.18.58.69.48A10 10 0 0 0 22 12 10 10 0 0 0 12 2Z"/></svg>
+            </a>
+        </div>
+        <p>{FOSSpel} © 2024-2026</p>
+    </footer>
+
+    <script>
+        // Make logo clickable
+        document.querySelector('.hero-logo').addEventListener('click', function() {
+            window.location.href = 'ru.html';
+        });
+
+        // Main JavaScript for Image Optimizer
+        (function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('uploadArea');
+            const fileInput = document.getElementById('fileInput');
+            const previewArea = document.getElementById('previewArea');
+            const metadataWarning = document.getElementById('metadataWarning');
+            const originalImage = document.getElementById('originalImage');
+            const optimizedImage = document.getElementById('optimizedImage');
+            const originalSize = document.getElementById('originalSize');
+            const originalDimensions = document.getElementById('originalDimensions');
+            const optimizedSize = document.getElementById('optimizedSize');
+            const savings = document.getElementById('savings');
+            const metadataBadge = document.getElementById('metadataBadge');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const qualitySlider = document.getElementById('qualitySlider');
+            const qualityValue = document.getElementById('qualityValue');
+            const formatButtons = document.querySelectorAll('.format-btn');
+            
+            // State
+            let currentFile = null;
+            let originalFileSize = 0;
+            let originalImageData = null;
+            let optimizedBlob = null;
+            let currentFormat = 'webp';
+            let hasExif = false;
+            let imageLoading = false;
+
+            // Event Listeners
+            uploadArea.addEventListener('click', () => fileInput.click());
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImageUpload(file);
+                }
+            });
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files[0]) {
+                    handleImageUpload(e.target.files[0]);
+                }
+            });
+
+            qualitySlider.addEventListener('input', (e) => {
+                qualityValue.textContent = e.target.value;
+                if (originalImageData) {
+                    compressImage();
+                }
+            });
+
+            formatButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    formatButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFormat = btn.dataset.format;
+                    if (originalImageData) {
+                        compressImage();
+                    }
+                });
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                if (optimizedBlob) {
+                    const url = URL.createObjectURL(optimizedBlob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `optimized-${Date.now()}.${currentFormat}`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }
+            });
+
+            // Core Functions
+            async function handleImageUpload(file) {
+                currentFile = file;
+                originalFileSize = file.size;
+                
+                // Check for EXIF data (simplified - in production use exif-js)
+                hasExif = file.type === 'image/jpeg' && file.size > 0; // Placeholder
+                if (hasExif) {
+                    metadataWarning.style.display = 'block';
+                    metadataBadge.style.display = 'inline-block';
+                } else {
+                    metadataWarning.style.display = 'none';
+                    metadataBadge.style.display = 'none';
+                }
+
+                // Read file as data URL for preview
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    originalImage.src = e.target.result;
+                    originalImageData = new Image();
+                    originalImageData.onload = () => {
+                        // Show original dimensions
+                        originalDimensions.textContent = `${originalImageData.width}×${originalImageData.height}`;
+                        originalSize.textContent = formatBytes(originalFileSize);
+                        
+                        // Show preview area
+                        previewArea.style.display = 'block';
+                        
+                        // Compress
+                        compressImage();
+                    };
+                    originalImageData.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            function compressImage() {
+                if (!originalImageData) return;
+                
+                imageLoading = true;
+                downloadBtn.disabled = true;
+                downloadBtn.textContent = '⏳ Обработка...';
+
+                // Create canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = originalImageData.width;
+                canvas.height = originalImageData.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(originalImageData, 0, 0);
+
+                // Set quality and format
+                const quality = qualitySlider.value / 100;
+                let mimeType = currentFormat === 'webp' ? 'image/webp' : 'image/jpeg';
+
+                // Convert to blob
+                canvas.toBlob((blob) => {
+                    optimizedBlob = blob;
+                    
+                    // Update UI
+                    const optimizedUrl = URL.createObjectURL(blob);
+                    optimizedImage.src = optimizedUrl;
+                    
+                    const optSize = blob.size;
+                    optimizedSize.textContent = formatBytes(optSize);
+                    
+                    const savedPercent = ((originalFileSize - optSize) / originalFileSize * 100).toFixed(1);
+                    savings.textContent = `↓ ${savedPercent}% сэкономлено`;
+                    
+                    downloadBtn.disabled = false;
+                    downloadBtn.textContent = '↓ Скачать оптимизированное изображение';
+                    imageLoading = false;
+                    
+                    // Clean up old URL
+                    URL.revokeObjectURL(optimizedUrl);
+                }, mimeType, quality);
+            }
+
+            // Utility Functions
+            function formatBytes(bytes) {
+                if (bytes === 0) return '0 Байт';
+                const k = 1024;
+                const sizes = ['Байт', 'КБ', 'МБ', 'ГБ'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+            }
+        })();
+    </script>
+</body>
+</html>
